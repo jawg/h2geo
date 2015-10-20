@@ -1,0 +1,8 @@
+h2geo_output.json
+*~
+*.iml
+build/
+out/
+.idea/
+.gradle
+target/
