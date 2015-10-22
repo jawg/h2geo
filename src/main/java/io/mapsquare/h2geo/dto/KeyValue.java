@@ -25,6 +25,8 @@ public class KeyValue {
     private String value;
     @SerializedName("in_wiki")
     private boolean inWiki;
+    @SerializedName("count")
+    private int count;
 
     public String getValue() {
         return value;
@@ -40,5 +42,13 @@ public class KeyValue {
 
     public void setInWiki(boolean inWiki) {
         this.inWiki = inWiki;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 }

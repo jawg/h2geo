@@ -1,8 +1,7 @@
 # h2geo
 
-h2geo (HitchHiker's Guide to OpenStreetMap) is a program generating a json file describing types for OSM.
-The purpose of this file is to be used in contribution application
-(for example  [osm-contributor](https://github.com/mapsquare/osm-contributor) )
+h2geo (HitchHiker's Guide to OpenStreetMap) allows the creation of a **data type descriptor** for OpenStreetMap.  
+Its purpose is to provide an **easy** & **localized** search for data types.
 
 =====
 
@@ -56,7 +55,7 @@ No duplicates, no "false-positive" results.
 ### What h2geo is not
 h2geo is not meant to have **all** data-types of OpenStreetMap.  
 Its purpose is to provide an easy-to-find tool for the **most-common** data types.  
-Only `amenity`, `shop`, `highway`, `tourism` tag keys are taken into account.
+Only `amenity`, `shop`, `highway`, `tourism`, `historic` tag keys are taken into account.
 
 =====
 
@@ -94,7 +93,8 @@ Result is output in `h2geo_output.json`
 				"en":["keywords", "associated", "to", "the", "type"],
 				"fr":["mot-clés", "associés", "au", "type"],
 				...
-				}
+				},
+			"usageCount": 12345,
 			"tags": [
 					{
 						"key":"tag key that should always be set for the type",
@@ -122,9 +122,13 @@ edit on the wiki should be just what's needed to correct it. We use Wikidata to 
 description. At the moment, we retrieve all possible values of tag keys `amenity`, `shop`, `highway`, `tourism`,
 `historic` that have an associated wikipage,  can be applied on nodes and have an associated Wikidata entry.
 
-### How to improve the file
-Just edit the osm wiki ! if yoi whant to add a major type let us know (or make a pull request)
+=====
 
+### How to improve the file
+Just edit the osm wiki ! if you want to add a major type let us know with an issue (or make a pull request)
+
+### They are using it:
+[osm-contributor](https://github.com/mapsquare/osm-contributor)
 
 ### Contributors
 This app is actively developed by:
@@ -135,3 +139,14 @@ This app is actively developed by:
  + [loicortola](https://github.com/loicortola)
 
 We welcome any contributors with issues / pull requests.
+
+### Tweet about it
+Contact the team: @DesignMyApp
+
+### License
+Copyright 2015 eBusiness Information
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.

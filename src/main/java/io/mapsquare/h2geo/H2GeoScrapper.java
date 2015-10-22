@@ -96,7 +96,7 @@ public class H2GeoScrapper {
                                                                                         wikiDataApi.getDataForEntity(linkedProject.getId())
                                                                                                 .subscribeOn(Schedulers.io()))
                                                                                         // create poi type
-                                                                                .map(wikidata -> PoiType.from(category, keyValue.getValue(), page, pages, wikidata)))))));
+                                                                                .map(wikidata -> PoiType.from(category, keyValue, page, pages, wikidata)))))));
 
 
         Observable<List<PoiType>> typesList = types.toList();

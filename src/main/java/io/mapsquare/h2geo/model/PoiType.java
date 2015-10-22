@@ -21,6 +21,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
+import io.mapsquare.h2geo.dto.KeyValue;
 import io.mapsquare.h2geo.dto.WikiPage;
 
 import java.util.*;
@@ -43,6 +44,16 @@ public class PoiType {
     @SerializedName("tags")
     private List<PoiTypeTag> tags = new ArrayList<>();
 
+    @SerializedName("usageCount")
+    private int usageCount;
+
+    public int getUsageCount() {
+        return usageCount;
+    }
+
+    public void setUsageCount(int usageCount) {
+        this.usageCount = usageCount;
+    }
 
     public String getName() {
         return name;
@@ -85,8 +96,8 @@ public class PoiType {
     }
 
 
-    public static PoiType from(String category, String categoryValue, WikiPage wikiPage, List<WikiPage> wikiPages, JsonObject wikidata) {
-        String name = category + "=" + categoryValue;
+    public static PoiType from(String category, KeyValue categoryValue, WikiPage wikiPage, List<WikiPage> wikiPages, JsonObject wikidata) {
+        String name = category + "=" + categoryValue.getValue();
         System.out.println("creating poitype " + name);
         PoiType poiType = new PoiType();
         poiType.setName(name);
@@ -118,8 +129,9 @@ public class PoiType {
         }
         PoiTypeTag categoryTag = new PoiTypeTag();
         categoryTag.setKey(category);
-        categoryTag.setValue(categoryValue);
+        categoryTag.setValue(categoryValue.getValue());
         poiType.getTags().add(categoryTag);
+        poiType.setUsageCount(categoryValue.getCount());
 
         for (String tag : wikiPage.getTagsImplies()) {
             String[] split = tag.split("=");
