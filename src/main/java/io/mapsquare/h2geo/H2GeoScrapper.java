@@ -74,6 +74,8 @@ public class H2GeoScrapper {
                 .flatMap(category ->
                         // get possible  tags values for category
                         tagsInfoApi.getKeyValues(category)
+                                .subscribeOn(Schedulers.io())
+                                .retry(10)
                                 .flatMap(it -> Observable.from(it.getData())
                                         // filter out values with no wiki pages
                                         .filter(KeyValue::isInWiki)
@@ -81,6 +83,7 @@ public class H2GeoScrapper {
                                                 //getting wiki page for category=keyValue
                                                 tagsInfoApi.getWikiPages(category, keyValue.getValue())
                                                         .subscribeOn(Schedulers.io())
+                                                        .retry(10)
                                                         .flatMap(pages -> Observable.from(pages)
                                                                 // filter english wiki page (will use it to get tags)
                                                                 .filter(page -> page.getLang().equals("en") && page.isOnNode())
@@ -88,6 +91,7 @@ public class H2GeoScrapper {
                                                                         //getting project page for category=keyValue
                                                                         tagsInfoApi.getLinkedProjects(category, keyValue.getValue())
                                                                                 .subscribeOn(Schedulers.io())
+                                                                                .retry(10)
                                                                                 .flatMap(linkedProjects -> Observable.<LinkedProject>from(linkedProjects.getData()))
                                                                                         // filter out types with no wikidata link
                                                                                 .filter(linkedProject -> linkedProject.getProjectId().equals("wikidata_org")
@@ -96,6 +100,7 @@ public class H2GeoScrapper {
                                                                                         // get wikidata infos
                                                                                 .flatMap(linkedProject ->
                                                                                         wikiDataApi.getDataForEntity(linkedProject.getId())
+                                                                                                .retry(10)
                                                                                                 .subscribeOn(Schedulers.io()))
                                                                                         // create poi type
                                                                                 .map(wikidata -> PoiType.from(category, keyValue, page, pages, wikidata)))))));
