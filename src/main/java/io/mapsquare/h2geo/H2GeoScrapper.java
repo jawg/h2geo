@@ -90,7 +90,9 @@ public class H2GeoScrapper {
                                                                                 .subscribeOn(Schedulers.io())
                                                                                 .flatMap(linkedProjects -> Observable.<LinkedProject>from(linkedProjects.getData()))
                                                                                         // filter out types with no wikidata link
-                                                                                .filter(linkedProject -> linkedProject.getProjectId().equals("wikidata_org"))
+                                                                                .filter(linkedProject -> linkedProject.getProjectId().equals("wikidata_org")
+                                                                                        && category.equals(linkedProject.getKey())
+                                                                                        && keyValue.getValue().equals(linkedProject.getValue()))
                                                                                         // get wikidata infos
                                                                                 .flatMap(linkedProject ->
                                                                                         wikiDataApi.getDataForEntity(linkedProject.getId())

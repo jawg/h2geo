@@ -27,6 +27,12 @@ public class LinkedProject {
     @SerializedName("doc_url")
     private String docUrl;
 
+    @SerializedName("key")
+    private String key;
+
+    @SerializedName("value")
+    private String value;
+
     public String getProjectId() {
         return projectId;
     }
@@ -41,6 +47,22 @@ public class LinkedProject {
 
     public void setDocUrl(String docUrl) {
         this.docUrl = docUrl;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
 
     public String getId() {
