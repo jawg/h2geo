@@ -106,8 +106,9 @@ public class H2GeoScrapper {
                                                                                 .map(wikidata -> PoiType.from(category, keyValue, page, pages, wikidata)))))));
 
 
-        Observable<List<PoiType>> typesList = types.toList();
+        Observable<List<PoiType>> typesList = types.toSortedList((t1, t2) -> t1.getName().compareTo(t2.getName()));
         List<PoiType> list = typesList.toBlocking().single();
+        System.out.println("Scrapped " + list.size() + " types");
         return new Gson().toJson(list);
     }
 
