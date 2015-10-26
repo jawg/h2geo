@@ -97,6 +97,8 @@ public class H2GeoScrapper {
                                                                                 .filter(linkedProject -> linkedProject.getProjectId().equals("wikidata_org")
                                                                                         && category.equals(linkedProject.getKey())
                                                                                         && keyValue.getValue().equals(linkedProject.getValue()))
+                                                                                        // sometimes there are multiple wikidata links, take only the first one
+                                                                                .take(1)
                                                                                         // get wikidata infos
                                                                                 .flatMap(linkedProject ->
                                                                                         wikiDataApi.getDataForEntity(linkedProject.getId())
