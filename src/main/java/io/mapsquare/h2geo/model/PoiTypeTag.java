@@ -36,6 +36,9 @@ public class PoiTypeTag {
     @SerializedName("mandatory")
     private Boolean mandatory;
 
+    @SerializedName("implied")
+    private Boolean implied;
+
     @SerializedName("possibleValues")
     private List<String> possibleValues;
 
@@ -69,6 +72,14 @@ public class PoiTypeTag {
 
     public void setMandatory(Boolean mandatory) {
         this.mandatory = mandatory;
+    }
+
+    public Boolean getImplied() {
+        return implied;
+    }
+
+    public void setImplied(Boolean implied) {
+        this.implied = implied;
     }
 
     public List<String> getPossibleValues() {

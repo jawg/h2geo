@@ -139,6 +139,7 @@ public class PoiType {
             poiTypeTag.setKey(split[0]);
             if (split.length > 1 && !split[1].equals("*")) {
                 poiTypeTag.setValue(split[1]);
+                poiTypeTag.setImplied(true);
             }
             poiType.getTags().add(poiTypeTag);
         }
