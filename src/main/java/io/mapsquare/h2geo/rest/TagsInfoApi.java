@@ -34,7 +34,7 @@ public interface TagsInfoApi {
     public Observable<Page<KeyValue>> getKeyValues(@Query("key") String key);
 
     @GET("tag/wiki_pages")
-    public Observable<List<WikiPage>> getWikiPages(@Query("key") String key, @Query("value") String value);
+    public Observable<Page<WikiPage>> getWikiPages(@Query("key") String key, @Query("value") String value);
 
     @GET("tag/projects")
     public Observable<Page<LinkedProject>> getLinkedProjects(@Query("key") String key, @Query("value") String value);

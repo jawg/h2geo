@@ -146,7 +146,7 @@ public class H2GeoScrapper {
             return tagsInfoApi.getWikiPages(category, categoryValue.getValue())
                     .subscribeOn(Schedulers.io())
                     .retry(MAX_RETRY_COUNT)
-                    .map(this::withWikiPages);
+                    .map(result -> withWikiPages(result.getData()));
         }
 
         public ResultBuilder withWikiPage(WikiPage wikiPage) {
