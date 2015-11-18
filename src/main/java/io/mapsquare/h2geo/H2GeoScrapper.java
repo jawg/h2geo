@@ -71,7 +71,7 @@ public class H2GeoScrapper {
 
     public String scrapeTypes() {
         Observable<PoiType> types = Observable
-                .from(Arrays.asList("amenity", "shop", "highway", "tourism", "historic"))
+                .from(Arrays.asList("amenity", "shop", "highway", "tourism", "historic", "emergency"))
                 .subscribeOn(Schedulers.io())  // parallel processing
                 .map(ResultBuilder::new)
                 .flatMap(ResultBuilder::findPossibleValuesForCategory)
@@ -89,7 +89,7 @@ public class H2GeoScrapper {
     /**
      * Class wrapping the operations we make to get the results
      *
-     * In order to create a PoiType, ihis class should be constructed with a category name, and then call the following
+     * In order to create a PoiType, this class should be constructed with a category name, and then call the following
      * methods in that order :
      *
      * <ul>
