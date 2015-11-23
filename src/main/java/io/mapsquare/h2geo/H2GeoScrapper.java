@@ -17,7 +17,6 @@
  */
 package io.mapsquare.h2geo;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -26,6 +25,7 @@ import io.mapsquare.h2geo.dto.LinkedProject;
 import io.mapsquare.h2geo.dto.Page;
 import io.mapsquare.h2geo.dto.WikiPage;
 import io.mapsquare.h2geo.model.PoiType;
+import io.mapsquare.h2geo.model.ScrappingError;
 import io.mapsquare.h2geo.rest.TagsInfoApi;
 import io.mapsquare.h2geo.rest.WikiDataApi;
 import retrofit.GsonConverterFactory;
@@ -36,6 +36,8 @@ import rx.schedulers.Schedulers;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class H2GeoScrapper {
 
@@ -46,6 +48,7 @@ public class H2GeoScrapper {
     public H2GeoScrapper() {
 
         OkHttpClient okClient = new OkHttpClient();
+
         okClient.interceptors().add(chain -> {
             Request request = chain.request();
             System.out.println(request.urlString());
@@ -67,24 +70,47 @@ public class H2GeoScrapper {
                 .client(okClient)
                 .build()
                 .create(WikiDataApi.class);
-
     }
 
-    public String scrapeTypes() {
-        Observable<PoiType> types = Observable
-                .from(Arrays.asList("amenity", "shop", "highway", "tourism", "historic", "emergency"))
+
+    public static class Result {
+        private final Set<PoiType> types = new TreeSet<>();
+        private final Set<ScrappingError> errors = new TreeSet<>();
+
+        public Set<PoiType> getTypes() {
+            return types;
+        }
+
+        public Set<ScrappingError> getErrors() {
+            return errors;
+        }
+
+        public void add(ResultBuilder resultBuilder) {
+            if(resultBuilder.hasError())  {
+                errors.add(resultBuilder.toScrappingError());
+            } else {
+                types.add(resultBuilder.toPoiType());
+            }
+        }
+    }
+
+    public Result scrapeTypes() {
+        Result result = Observable.from(Arrays.asList("amenity", "shop", "highway", "tourism", "historic", "emergency"))
                 .subscribeOn(Schedulers.io())  // parallel processing
                 .map(ResultBuilder::new)
                 .flatMap(ResultBuilder::findPossibleValuesForCategory)
                 .flatMap(ResultBuilder::getWikiPages)
                 .flatMap(ResultBuilder::filterEnWikiPage)
+                .flatMap(ResultBuilder::getWikiDataId)
                 .flatMap(ResultBuilder::getWikiData)
-                .map(ResultBuilder::toPoiType);
+                .collect(Result::new, Result::add)
+                .toBlocking()
+                .single();
 
-        Observable<List<PoiType>> typesList = types.toSortedList((t1, t2) -> t1.getName().compareTo(t2.getName()));
-        List<PoiType> list = typesList.toBlocking().single();
-        System.out.println("Scrapped " + list.size() + " types");
-        return new Gson().toJson(list);
+        System.out.println("Scrapped " + result.getTypes().size() + " types");
+        System.out.println("Got " + result.getErrors().size() + " scrapping errors");
+        return result;
+
     }
 
     /**
@@ -94,97 +120,157 @@ public class H2GeoScrapper {
      * methods in that order :
      *
      * <ul>
-     *  <li>{@link #findPossibleValuesForCategory()}</li>
-     *  <li>{@link #getWikiPages()}</li>
-     *  <li>{@link #filterEnWikiPage()}</li>
-     *  <li>{@link #getWikiData()}</li>
-     *  <li>{@link #toPoiType()}</li>
+     * <li>{@link #findPossibleValuesForCategory()}</li>
+     * <li>{@link #getWikiPages()}</li>
+     * <li>{@link #filterEnWikiPage()}</li>
+     * <li>{@link #getWikiDataId()}</li>
+     * <li>{@link #getWikiData()}</li>
      * </ul>
+     *
+     * then either {@link #toPoiType()} or {@link #toScrappingError()} depending on the result of {@link #hasError()}
      *
      * Note that all these methods return {@link Observable}s
      */
     private class ResultBuilder {
+        private final String error;
         private final String category;
         private final KeyValue categoryValue;
-        private final WikiPage wikiPage;
+        private final WikiPage enWikiPage;
         private final List<WikiPage> wikiPages;
+        private final String wikiDataId;
         private final JsonObject wikiData;
 
-        private ResultBuilder(String category, KeyValue categoryValue, List<WikiPage> wikiPages, WikiPage wikiPage, JsonObject wikiData) {
+        private ResultBuilder(String category, KeyValue categoryValue, List<WikiPage> wikiPages, WikiPage enWikiPage, String wikiDataId, JsonObject wikiData) {
             this.category = category;
             this.categoryValue = categoryValue;
-            this.wikiPage = wikiPage;
+            this.enWikiPage = enWikiPage;
             this.wikiPages = wikiPages;
+            this.wikiDataId = wikiDataId;
             this.wikiData = wikiData;
+            this.error = null;
         }
 
         public ResultBuilder(String category) {
             this.category = category;
             this.categoryValue = null;
-            this.wikiPage = null;
+            this.enWikiPage = null;
             this.wikiPages = null;
+            this.wikiDataId = null;
             this.wikiData = null;
+            this.error = null;
         }
 
-        public ResultBuilder withCategoryValue(KeyValue categoryValue) {
-            return new ResultBuilder(category, categoryValue, wikiPages, wikiPage, wikiData);
+        public ResultBuilder(ResultBuilder existing, String error) {
+            this.category = existing.category;
+            this.categoryValue = existing.categoryValue;
+            this.enWikiPage = existing.enWikiPage;
+            this.wikiPages = existing.wikiPages;
+            this.wikiDataId = existing.wikiDataId;
+            this.wikiData = existing.wikiData;
+            this.error = error;
+        }
+
+        public Boolean hasError() {
+            return error != null;
         }
 
         public Observable<ResultBuilder> findPossibleValuesForCategory() {
             return tagsInfoApi.getKeyValues(category)
                     .subscribeOn(Schedulers.io())
                     .retry(MAX_RETRY_COUNT)
-                    .flatMap(result -> Observable.from(result.getData()))
-                    .filter(KeyValue::isInWiki)  // filter out values with no wiki pages
+                    .flatMapIterable(Page::getData)
                     .map(this::withCategoryValue);
         }
 
-        public ResultBuilder withWikiPages(List<WikiPage> wikiPages) {
-            return new ResultBuilder(category, categoryValue, wikiPages, wikiPage, wikiData);
-        }
-
         public Observable<ResultBuilder> getWikiPages() {
-            return tagsInfoApi.getWikiPages(category, categoryValue.getValue())
-                    .subscribeOn(Schedulers.io())
-                    .retry(MAX_RETRY_COUNT)
-                    .map(Page::getData)
-                    .map(this::withWikiPages);
+            return doIfNoError(() ->
+                    tagsInfoApi.getWikiPages(category, categoryValue.getValue())
+                            .subscribeOn(Schedulers.io())
+                            .retry(MAX_RETRY_COUNT)
+                            .map(Page::getData)
+                            .map(this::withWikiPages));
         }
 
-        public ResultBuilder withWikiPage(WikiPage wikiPage) {
-            return new ResultBuilder(category, categoryValue, wikiPages, wikiPage, wikiData);
+        public Observable<ResultBuilder> filterEnWikiPage() {
+            return doIfNoError(() ->
+                    Observable.from(wikiPages)
+                            .firstOrDefault(null, page -> page.getLang().equals("en"))
+                            .map(this::withEnWikiPage)
+                            .map(ResultBuilder::checkOnNode));
         }
 
-        Observable<ResultBuilder> filterEnWikiPage() {
-            return Observable.from(wikiPages)
-                    .filter(page -> page.getLang().equals("en") && page.isOnNode())
-                    .map(this::withWikiPage);
-        }
-
-        public ResultBuilder withWikiData(JsonObject wikidata) {
-            return new ResultBuilder(category, categoryValue, wikiPages, wikiPage, wikidata);
+        public Observable<ResultBuilder> getWikiDataId() {
+            return doIfNoError(() ->
+                    tagsInfoApi.getLinkedProjects(category, categoryValue.getValue())
+                            .subscribeOn(Schedulers.io())
+                            .retry(MAX_RETRY_COUNT)
+                            .flatMapIterable(Page::getData)
+                            // filter out non wikiData projects and project not exactly about this key and value
+                            .firstOrDefault(null, linkedProject -> linkedProject.getProjectId().equals("wikidata_org")
+                                    && category.equals(linkedProject.getKey())
+                                    && categoryValue.getValue().equals(linkedProject.getValue()))
+                            .map(this::withWikiDataId));
         }
 
         public Observable<ResultBuilder> getWikiData() {
-            return tagsInfoApi.getLinkedProjects(category, categoryValue.getValue())
-                    .subscribeOn(Schedulers.io())
-                    .retry(MAX_RETRY_COUNT)
-                    .flatMap(linkedProjects -> Observable.<LinkedProject>from(linkedProjects.getData()))
-                            // filter out non wikiData projects and project not exactly about this key and value
-                    .filter(linkedProject -> linkedProject.getProjectId().equals("wikidata_org")
-                            && category.equals(linkedProject.getKey())
-                            && categoryValue.getValue().equals(linkedProject.getValue()))
-                    .take(1)  // sometimes there are multiple wikiData links, take only the first one
-                    .flatMap(linkedProject ->
-                            wikiDataApi.getDataForEntity(linkedProject.getId())
-                                    .retry(MAX_RETRY_COUNT)
-                                    .subscribeOn(Schedulers.io()))
-                    .map(this::withWikiData);
+            return doIfNoError(() ->
+                    wikiDataApi.getDataForEntity(wikiDataId)
+                            .retry(MAX_RETRY_COUNT)
+                            .subscribeOn(Schedulers.io())
+                            .map(this::withWikiData));
+
+        }
+        
+        public PoiType toPoiType() {
+            return PoiType.from(category, categoryValue, enWikiPage, wikiPages, wikiData);
         }
 
-        public PoiType toPoiType() {
-            return PoiType.from(category, categoryValue, wikiPage, wikiPages, wikiData);
+        public ScrappingError toScrappingError() {
+            return new ScrappingError(category, categoryValue == null ? "null" : categoryValue.getValue(), error);
         }
+
+        private Observable<ResultBuilder> doIfNoError(Work work) {
+            return error != null
+                    ? Observable.just(this)
+                    : work.perform();
+        }
+
+        private ResultBuilder checkOnNode() {
+            return error != null || enWikiPage.isOnNode()
+                    ? this
+                    : new ResultBuilder(this, "not available on nodes");
+        }
+
+        private ResultBuilder withCategoryValue(KeyValue categoryValue) {
+            return categoryValue.isInWiki()
+                    ? new ResultBuilder(category, categoryValue, wikiPages, enWikiPage, wikiDataId, wikiData)
+                    : new ResultBuilder(this, "not in wiki");
+        }
+
+        private ResultBuilder withWikiPages(List<WikiPage> wikiPages) {
+            return new ResultBuilder(category, categoryValue, wikiPages, enWikiPage, wikiDataId, wikiData);
+        }
+
+        private ResultBuilder withEnWikiPage(WikiPage enWikiPage) {
+            return enWikiPage != null
+                    ? new ResultBuilder(category, categoryValue, wikiPages, enWikiPage, wikiDataId, wikiData)
+                    : new ResultBuilder(this, "no en wiki page");
+        }
+
+        private ResultBuilder withWikiData(JsonObject wikidata) {
+            return new ResultBuilder(category, categoryValue, wikiPages, enWikiPage, wikiDataId, wikidata);
+        }
+
+        private ResultBuilder withWikiDataId(LinkedProject wikiDataId) {
+            return wikiDataId != null
+                    ? new ResultBuilder(category, categoryValue, wikiPages, enWikiPage, wikiDataId.getId(), wikiData)
+                    : new ResultBuilder(this, "no corresponding wikidata project (must not use wildcards)");
+        }
+
+    }
+
+    private interface Work {
+        Observable<ResultBuilder> perform();
     }
 
 }

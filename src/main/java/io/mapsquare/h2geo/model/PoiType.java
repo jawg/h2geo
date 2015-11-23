@@ -26,7 +26,7 @@ import io.mapsquare.h2geo.dto.WikiPage;
 
 import java.util.*;
 
-public class PoiType {
+public class PoiType implements Comparable<PoiType> {
 
 
     @SerializedName("name")
@@ -165,5 +165,10 @@ public class PoiType {
             poiType.getTags().add(poiTypeTag);
         }
         return poiType;
+    }
+
+    @Override
+    public int compareTo(PoiType poiType) {
+        return name.compareTo(poiType.name);
     }
 }

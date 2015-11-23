@@ -17,6 +17,8 @@
  */
 package io.mapsquare.h2geo;
 
+import com.google.gson.Gson;
+
 import java.io.File;
 import java.io.FileOutputStream;
 
@@ -24,9 +26,14 @@ public class Main {
 
     public static void main(String... args) throws Exception {
         File outFile = new File(args.length > 0 ? args[0] : "h2geo_output.json");
+        File outErrorFile = new File(args.length > 1 ? args[1] : "h2geo_output_errors.json");
         FileOutputStream out = new FileOutputStream(outFile);
-        out.write(new H2GeoScrapper().scrapeTypes().getBytes());
-        System.out.println("saved result in " + outFile.getAbsolutePath());
+        FileOutputStream outError = new FileOutputStream(outErrorFile);
+        H2GeoScrapper.Result result = new H2GeoScrapper().scrapeTypes();
+        Gson gson = new Gson();
+        out.write(gson.toJson(result.getTypes()).getBytes());
+        outError.write(gson.toJson(result.getErrors()).getBytes());
+        System.out.println("saved result in " + outFile.getAbsolutePath() +" and "+outErrorFile.getAbsolutePath());
     }
 
 }
