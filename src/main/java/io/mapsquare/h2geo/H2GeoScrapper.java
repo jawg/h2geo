@@ -220,7 +220,7 @@ public class H2GeoScrapper {
                             .map(this::withWikiData));
 
         }
-        
+
         public PoiType toPoiType() {
             return PoiType.from(category, categoryValue, enWikiPage, wikiPages, wikiData);
         }
@@ -242,9 +242,10 @@ public class H2GeoScrapper {
         }
 
         private ResultBuilder withCategoryValue(KeyValue categoryValue) {
+            ResultBuilder result = new ResultBuilder(category, categoryValue, wikiPages, enWikiPage, wikiDataId, wikiData);
             return categoryValue.isInWiki()
-                    ? new ResultBuilder(category, categoryValue, wikiPages, enWikiPage, wikiDataId, wikiData)
-                    : new ResultBuilder(this, "not in wiki");
+                    ? result
+                    : new ResultBuilder(result, "not in wiki");
         }
 
         private ResultBuilder withWikiPages(List<WikiPage> wikiPages) {
