@@ -32,11 +32,17 @@ public class PoiType {
     @SerializedName("name")
     private String name;
 
+    @SerializedName("wikiUrl")
+    private String wikiUrl;
+
     @SerializedName("label")
     private Map<String, String> label = new HashMap<>();
 
     @SerializedName("description")
     private Map<String, String> description = new HashMap<>();
+
+    @SerializedName("usageCount")
+    private int usageCount;
 
     @SerializedName(("keyWords"))
     private Map<String, List<String>> keyWords = new HashMap<>();
@@ -44,23 +50,20 @@ public class PoiType {
     @SerializedName("tags")
     private List<PoiTypeTag> tags = new ArrayList<>();
 
-    @SerializedName("usageCount")
-    private int usageCount;
-
-    public int getUsageCount() {
-        return usageCount;
-    }
-
-    public void setUsageCount(int usageCount) {
-        this.usageCount = usageCount;
-    }
-
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getWikiUrl() {
+        return wikiUrl;
+    }
+
+    public void setWikiUrl(String wikiUrl) {
+        this.wikiUrl = wikiUrl;
     }
 
     public Map<String, String> getLabel() {
@@ -79,12 +82,12 @@ public class PoiType {
         this.description = description;
     }
 
-    public List<PoiTypeTag> getTags() {
-        return tags;
+    public int getUsageCount() {
+        return usageCount;
     }
 
-    public void setTags(List<PoiTypeTag> tags) {
-        this.tags = tags;
+    public void setUsageCount(int usageCount) {
+        this.usageCount = usageCount;
     }
 
     public Map<String, List<String>> getKeyWords() {
@@ -95,12 +98,20 @@ public class PoiType {
         this.keyWords = keyWords;
     }
 
+    public List<PoiTypeTag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<PoiTypeTag> tags) {
+        this.tags = tags;
+    }
 
     public static PoiType from(String category, KeyValue categoryValue, WikiPage wikiPage, List<WikiPage> wikiPages, JsonObject wikidata) {
         String name = category + "=" + categoryValue.getValue();
         System.out.println("creating poitype " + name);
         PoiType poiType = new PoiType();
         poiType.setName(name);
+        poiType.setWikiUrl("https://wiki.openstreetmap.org/wiki/"+wikiPage.getTitle());
 
         JsonObject entity = wikidata.getAsJsonObject("entities").entrySet().iterator().next().getValue().getAsJsonObject();
 

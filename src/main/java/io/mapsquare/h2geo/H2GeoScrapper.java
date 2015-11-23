@@ -7,7 +7,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *   http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,6 +23,7 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import io.mapsquare.h2geo.dto.KeyValue;
 import io.mapsquare.h2geo.dto.LinkedProject;
+import io.mapsquare.h2geo.dto.Page;
 import io.mapsquare.h2geo.dto.WikiPage;
 import io.mapsquare.h2geo.model.PoiType;
 import io.mapsquare.h2geo.rest.TagsInfoApi;
@@ -146,7 +147,8 @@ public class H2GeoScrapper {
             return tagsInfoApi.getWikiPages(category, categoryValue.getValue())
                     .subscribeOn(Schedulers.io())
                     .retry(MAX_RETRY_COUNT)
-                    .map(result -> withWikiPages(result.getData()));
+                    .map(Page::getData)
+                    .map(this::withWikiPages);
         }
 
         public ResultBuilder withWikiPage(WikiPage wikiPage) {
