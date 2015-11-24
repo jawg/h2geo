@@ -1,6 +1,7 @@
 ./gradlew run || exit
 cp -r site build
 cd build/site
+rm .gitignore
 git init
 git config user.name "Travis build"
 git config user.email "tlorrain@excilys.com"
