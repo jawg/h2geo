@@ -25,15 +25,23 @@ import java.io.FileOutputStream;
 public class Main {
 
     public static void main(String... args) throws Exception {
-        File outFile = new File(args.length > 0 ? args[0] : "h2geo_output.json");
-        File outErrorFile = new File(args.length > 1 ? args[1] : "h2geo_output_errors.json");
-        FileOutputStream out = new FileOutputStream(outFile);
-        FileOutputStream outError = new FileOutputStream(outErrorFile);
-        H2GeoScrapper.Result result = new H2GeoScrapper().scrapeTypes();
+        File outDir = new File(args.length > 0 ? args[0] : "build/site");
+        if(!outDir.mkdirs()) {
+            System.out.println("could not create directory "+outDir.getAbsolutePath());
+            return;
+        }
+        File outFile = new File(outDir, args.length > 1 ? args[1] : "h2geo.json");
+        File outErrorFile = new File(outDir, args.length > 2 ? args[2] : "h2geo_errors.json");
         Gson gson = new Gson();
-        out.write(gson.toJson(result.getTypes()).getBytes());
-        outError.write(gson.toJson(result.getErrors()).getBytes());
-        System.out.println("saved result in " + outFile.getAbsolutePath() +" and "+outErrorFile.getAbsolutePath());
+        H2GeoScrapper.Result result = new H2GeoScrapper().scrapeTypes();
+        try (
+                FileOutputStream out = new FileOutputStream(outFile);
+                FileOutputStream outError = new FileOutputStream(outErrorFile);) {
+            out.write(gson.toJson(result.getTypes()).getBytes());
+            outError.write(gson.toJson(result.getErrors()).getBytes());
+        }
+
+        System.out.println("saved result in " + outFile.getAbsolutePath() + " and " + outErrorFile.getAbsolutePath());
     }
 
 }

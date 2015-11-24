@@ -1,6 +1,4 @@
 /local.properties
-h2geo_output.json
-h2geo_output_errors.json
 *~
 *.iml
 build/
