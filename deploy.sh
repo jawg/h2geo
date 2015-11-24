@@ -1,4 +1,5 @@
 ./gradlew run || exit
+cp -r site build
 cd build/site
 git init
 git config user.name "Travis build"
