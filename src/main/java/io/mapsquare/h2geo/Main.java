@@ -18,27 +18,34 @@
 package io.mapsquare.h2geo;
 
 import com.google.gson.Gson;
+import io.mapsquare.h2geo.model.H2GeoRun;
+import io.mapsquare.h2geo.model.PoiType;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Main {
 
     public static void main(String... args) throws Exception {
         File outDir = new File(args.length > 0 ? args[0] : "build/site");
-        if(!outDir.mkdirs()) {
-            System.out.println("could not create directory "+outDir.getAbsolutePath());
+        if (!outDir.exists() && !outDir.isDirectory() && !outDir.mkdirs()) {
+            System.out.println("could not create directory " + outDir.getAbsolutePath());
             return;
         }
         File outFile = new File(outDir, args.length > 1 ? args[1] : "h2geo.json");
         File outErrorFile = new File(outDir, args.length > 2 ? args[2] : "h2geo_errors.json");
         Gson gson = new Gson();
         H2GeoScrapper.Result result = new H2GeoScrapper().scrapeTypes();
-        try (
-                FileOutputStream out = new FileOutputStream(outFile);
-                FileOutputStream outError = new FileOutputStream(outErrorFile);) {
-            out.write(gson.toJson(result.getTypes()).getBytes());
-            outError.write(gson.toJson(result.getErrors()).getBytes());
+
+        H2GeoRun h2GeoRun = new H2GeoRun(BuildProperties.VERSION, LocalDateTime.now(), result.getTypes());
+        H2GeoRun h2GeoErrorsRun = new H2GeoRun(BuildProperties.VERSION, LocalDateTime.now(), result.getErrors());
+
+        try (FileOutputStream out = new FileOutputStream(outFile);
+             FileOutputStream outError = new FileOutputStream(outErrorFile)) {
+            out.write(gson.toJson(h2GeoRun).getBytes());
+            outError.write(gson.toJson(h2GeoErrorsRun).getBytes());
         }
 
         System.out.println("saved result in " + outFile.getAbsolutePath() + " and " + outErrorFile.getAbsolutePath());
