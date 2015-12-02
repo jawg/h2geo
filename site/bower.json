@@ -1,0 +1,14 @@
+{
+  "name": "h2geo website",
+  "description": "Viewer for h2geo files",
+  "version": "0.0.1-Snapshot",
+  "license": "Apache V2",
+  "private": true,
+  "dependencies": {
+    "angular": "~1.4.0",
+    "angular-route": "~1.4.0",
+    "angular-loader": "~1.4.0",
+    "angular-mocks": "~1.4.0",
+    "html5-boilerplate": "~5.2.0"
+  }
+}
