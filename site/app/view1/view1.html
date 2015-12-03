@@ -1,5 +1,3 @@
-<p>This is the partial for view 1.</p>
-
 
 
 <input type="text" placeholder="Search" ng-model="search"/>
@@ -9,19 +7,24 @@
 </label>
 
 <div class="cards">
-    <div class="card_wrapper" ng-repeat="poiType in poiTypes | filter: searchFilter">
-        <div class="card" >
-            <div class="name">{{poiType.label[language]}}</div>
-            <div class="description">{{poiType.description[language]}}</div>
-            <div class="keywords">
-                <span class ="keyword" ng-repeat="keyword in poiType.keyWords[language]">{{keyword}}</span>
-            </div>
-            <div class="tags">
-                <div class ="tag" ng-repeat="tag in poiType.tags">
-                    <span class="tag_key">{{tag.key}}</span><span class="tag_value">{{tag.value}}</span>
+    <div class="column_cards" ng-repeat="poiTypesFroColumn in poiTypesColumn ">
+        <div class="card_wrapper" ng-style="{'animation-delay': (100 * $index) + 'ms'}" ng-repeat="poiType in poiTypesFroColumn">
+            <div class="card">
+                <div class="name">{{poiType.label[language]}}</div>
+                <div class="description">{{poiType.description[language]}}</div>
+                <div class="keywords">
+                    <span class="keyword" ng-repeat="keyword in poiType.keyWords[language]">{{keyword}}</span>
                 </div>
+                <div class="tags">
+                    <div class="tag" ng-repeat="tag in poiType.tags">
+                        <span class="tag_key">{{tag.key}}</span><span
+                            class="tag_value">{{tag.value}}</span><span
+                            class="possible_value" ng-repeat="possibleValue in tag.possibleValues">{{possibleValue}}<span
+                            class="possible_divider" ng-if="$index < tag.possibleValues.length -1"> / </span></span>
+                    </div>
+                </div>
+                <div class="technical_name"><a href="{{poiType.wikiUrl}}" target="_blank">{{poiType.name}}</a></div>
             </div>
-            <div class="technical_name"><a href="{{poiType.wikiUrl}}">{{poiType.name}}</a></div>
         </div>
     </div>
 </div>

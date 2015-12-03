@@ -1,108 +1,210 @@
 /* app css stylesheet */
 
 .menu {
-  list-style: none;
-  border-bottom: 0.1em solid black;
-  margin-bottom: 2em;
-  padding: 0 0 0.5em;
+    list-style: none;
+    border-bottom: 0.1em solid black;
+    margin-bottom: 2em;
+    padding: 0 0 0.5em;
 }
 
 .menu:before {
-  content: "[";
+    content: "[";
 }
 
 .menu:after {
-  content: "]";
+    content: "]";
 }
 
 .menu > li {
-  display: inline;
+    display: inline;
 }
 
 .menu > li:before {
-  content: "|";
-  padding-right: 0.3em;
+    content: "|";
+    padding-right: 0.3em;
 }
 
 .menu > li:nth-child(1):before {
-  content: "";
-  padding: 0;
+    content: "";
+    padding: 0;
 }
 
-
 html {
-  background: #eeeeee;
+    background: #eeeeee;
+}
+
+.column_cards {
+    max-width: 400px;
+    min-width: 300px;
 }
 
 .cards {
-  display: flex;
-  flex-wrap: wrap;
-  padding: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
 }
 
 .card_wrapper {
-  width: 33%;
-  max-width: 400px;
-  padding: 20px;
-  box-sizing: border-box;
+    padding: 20px;
+    box-sizing: border-box;
+
+    -webkit-transform: scale(0);
+    -moz-transform: scale(0);
+    -ms-transform: scale(0);
+    -o-transform: scale(0);
+    transform: scale(0);
+
+    -webkit-animation: fadein 400ms;
+    -o-animation: fadein 400ms;
+    animation: fadein 400ms;
+
+    animation-fill-mode: forwards;
+}
+
+@-webkit-keyframes fadein {
+    from {
+        -webkit-transform: scale(0);
+        -moz-transform: scale(0);
+        -ms-transform: scale(0);
+        -o-transform: scale(0);
+        transform: scale(0);
+    }
+    to {
+        -webkit-transform: scale(1);
+        -moz-transform: scale(1);
+        -ms-transform: scale(1);
+        -o-transform: scale(1);
+        transform: scale(1);
+    }
+}
+
+@keyframes fadein {
+    from {
+        -webkit-transform: scale(0);
+        -moz-transform: scale(0);
+        -ms-transform: scale(0);
+        -o-transform: scale(0);
+        transform: scale(0);
+    }
+    to {
+        -webkit-transform: scale(1);
+        -moz-transform: scale(1);
+        -ms-transform: scale(1);
+        -o-transform: scale(1);
+        transform: scale(1);
+    }
 }
 
 .card {
-  background: white;
-  border-radius: 5px;
-  width: 100%;
-  padding: 5px;
-  box-shadow: 5px 5px 10px 0 #cfcfcf;
-  display: inline-block;
+    background: white;
+    border-radius: 5px;
+    width: 100%;
+    padding: 5px;
+    box-shadow: 5px 5px 10px 0 #cfcfcf;
+    display: inline-block;
 }
 
 .name {
-  font-size: 2em;
+    font-size: 2em;
+    padding-left: 10px;
+    padding-right: 10px;
+    text-transform: capitalize;
 }
 
 .technical_name {
-  text-align: right;
+    text-align: right;
 }
 
-.technical_name  a{
-  color: grey;
-  font-size: 0.9em;
+.technical_name a {
+    color: grey;
+    font-size: 0.9em;
 }
 
 .description {
-  font-size: 1.2em;
-  font-style: italic;
-  margin: 2em 1em;
+    font-size: 1.2em;
+    font-style: italic;
+    margin: 2em 1em;
 }
-.description:before  {
-  content: "“";
-  font-weight: bolder;
-  font-size: 2em;
+
+.description:before {
+    content: "“";
+    font-weight: bolder;
+    font-size: 2em;
 }
 
 .description:after {
-  content: "”";
-  font-weight: bolder;
-  font-size: 2em;
+    content: "”";
+    font-weight: bolder;
+    font-size: 2em;
 }
 
 .keywords {
-  display: flex;
-  flex-wrap: wrap;
+    display: flex;
+    flex-wrap: wrap;
 }
+
 .keyword {
-  padding: 2px 5px;
-  margin-right:5px;
-  margin-bottom:5px ;
-  border-radius: 1em;
-  background: lightblue;
+    padding: 2px 5px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    border-radius: 1em;
+    background: #90CAF9;
 }
+
+.possible_value {
+    color: #42A5F5;
+    font-size: 1.2em;
+    /*margin-bottom:5px ;*/
+    /*border-radius: 1em;*/
+    /*background: lightseagreen;*/
+}
+
 .tags {
-  font-family: monospace;
-  margin: 5px;
+    font-family: monospace;
+    margin: 5px;
 }
+
 .tag_key:after {
-  content:"="
+    content: "= "
 }
 
+nav {
+    width: 100%;
+    height: 50px;
+    background-color: #1976D2;
+}
 
+.nav_text_center{
+    height: 50px;
+    line-height: 50px;
+}
+
+.nav_title {
+    display: inline-block;
+    color: white;
+    font-size: 2em;
+    padding-left: 10px;
+}
+
+.nav_items {
+    height: 50px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+    padding-right: 15px;
+}
+
+.nav_item {
+    display: inline-block;
+    padding-right: 10px;
+    padding-left:  10px;
+    color: white;
+}
+
+.nav_item:hover {
+
+    box-shadow: 0 0 6px 1px rgba(0, 0, 0, 0.4);
+    background-color: #1E88E5;
+    border-color: #0D47A1;
+
+}

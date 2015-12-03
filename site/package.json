@@ -1,5 +1,5 @@
 {
- "name": "h2geo website",
+ "name": "h2geo_website",
   "description": "Viewer for h2geo files",
   "private": true,
   "version": "0.0.1-Snapshot",
