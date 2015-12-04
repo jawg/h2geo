@@ -17,10 +17,8 @@ angular.module('myApp.view1', ['ngRoute'])
         $http.get('h2geo.json')
             .then(function successCallback(response) {
                 $scope.poiTypes = response.data.data;
-
                 updatePoiTypeColumn($scope.poiTypes);
 
-                console.log($scope.poiTypesColumn)
             }, function errorCallback(response) {
                 // called asynchronously if an error occurs
                 // or server returns response with an error status.
