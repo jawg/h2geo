@@ -17,54 +17,69 @@
  */
 package io.mapsquare.h2geo.model;
 
-import com.google.gson.annotations.SerializedName;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 
-public class ScrappingError implements Comparable<ScrappingError>{
-    @SerializedName("key")
-    private String key;
+import java.lang.reflect.Type;
+import java.util.Collections;
+import java.util.Set;
+import java.util.TreeSet;
 
-    @SerializedName("value")
-    private String value;
+public enum ScrappingError {
+    NOT_IN_WIKI(1, "Not in wiki"),
+    NOT_EN_WIKI(2, "No English wiki page"),
+    NOT_AVAILABLE_ON_NODES(3, "Not available on nodes"),
+    NOT_CORRESPONDING_WIKIDATA_PROJECT(4, "No corresponding wikidata project (must not use wildcards)");
 
-    @SerializedName("error")
-    private String error;
+    private int errorCode;
 
-    public ScrappingError() {
+    private String errorMessage;
+
+    private Set<WikiError> errors;
+
+    private ScrappingError(int errorCode, String errorMessage) {
+        this.errorCode = errorCode;
+        this.errorMessage = errorMessage;
+        this.errors = new TreeSet<>();
     }
 
-    public ScrappingError(String key, String value, String error) {
-        this.key = key;
-        this.value = value;
-        this.error = error;
+    public int getErrorCode() {
+        return errorCode;
     }
 
-    public String getKey() {
-        return key;
+    public String getErrorMessage() {
+        return errorMessage;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public Set<WikiError> getErrors() {
+        return errors;
     }
 
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    public String getError() {
-        return error;
-    }
-
-    public void setError(String error) {
-        this.error = error;
+    public void addError(WikiError wikiError) {
+        errors.add(wikiError);
     }
 
     @Override
-    public int compareTo(ScrappingError scrappingError) {
-        int keyComparison = key.compareTo(scrappingError.key);
-        return keyComparison !=0 ? keyComparison : value.compareTo(scrappingError.value);
+    public String toString() {
+        return errors.size() + " " + errorMessage;
+    }
+
+    public static Set<ScrappingError> asSet() {
+        Set<ScrappingError> set = new TreeSet<>();
+        Collections.addAll(set, ScrappingError.values());
+        return set;
+    }
+
+    public static class ScrappingErrorSerializer implements JsonSerializer<ScrappingError> {
+        @Override
+        public JsonElement serialize(ScrappingError src, Type typeOfSrc, JsonSerializationContext context) {
+            JsonObject object = new JsonObject();
+            object.add("errorCode", context.serialize(src.getErrorCode()));
+            object.add("errorMessage", context.serialize(src.getErrorMessage()));
+            object.add("errors", context.serialize(src.getErrors()));
+            return object;
+        }
     }
 }

@@ -18,12 +18,12 @@
 package io.mapsquare.h2geo;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import io.mapsquare.h2geo.model.H2GeoRun;
-import io.mapsquare.h2geo.model.PoiType;
+import io.mapsquare.h2geo.model.ScrappingError;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class Main {
@@ -36,11 +36,12 @@ public class Main {
         }
         File outFile = new File(outDir, args.length > 1 ? args[1] : "h2geo.json");
         File outErrorFile = new File(outDir, args.length > 2 ? args[2] : "h2geo_errors.json");
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().registerTypeAdapter(ScrappingError.class, new ScrappingError.ScrappingErrorSerializer()).create();
+
         H2GeoScrapper.Result result = new H2GeoScrapper().scrapeTypes();
 
         H2GeoRun h2GeoRun = new H2GeoRun(BuildProperties.VERSION, LocalDateTime.now(), result.getTypes());
-        H2GeoRun h2GeoErrorsRun = new H2GeoRun(BuildProperties.VERSION, LocalDateTime.now(), result.getErrors());
+        H2GeoRun h2GeoErrorsRun = new H2GeoRun(BuildProperties.VERSION, LocalDateTime.now(), ScrappingError.asSet());
 
         try (FileOutputStream out = new FileOutputStream(outFile);
              FileOutputStream outError = new FileOutputStream(outErrorFile)) {

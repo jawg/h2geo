@@ -26,6 +26,7 @@ import io.mapsquare.h2geo.dto.Page;
 import io.mapsquare.h2geo.dto.WikiPage;
 import io.mapsquare.h2geo.model.PoiType;
 import io.mapsquare.h2geo.model.ScrappingError;
+import io.mapsquare.h2geo.model.WikiError;
 import io.mapsquare.h2geo.rest.TagsInfoApi;
 import io.mapsquare.h2geo.rest.WikiDataApi;
 import retrofit.GsonConverterFactory;
@@ -75,19 +76,14 @@ public class H2GeoScrapper {
 
     public static class Result {
         private final Set<PoiType> types = new TreeSet<>();
-        private final Set<ScrappingError> errors = new TreeSet<>();
 
         public Set<PoiType> getTypes() {
             return types;
         }
 
-        public Set<ScrappingError> getErrors() {
-            return errors;
-        }
-
         public void add(ResultBuilder resultBuilder) {
-            if(resultBuilder.hasError())  {
-                errors.add(resultBuilder.toScrappingError());
+            if (resultBuilder.hasError()) {
+                resultBuilder.error.addError(resultBuilder.toWIkiError());
             } else {
                 types.add(resultBuilder.toPoiType());
             }
@@ -108,7 +104,7 @@ public class H2GeoScrapper {
                 .single();
 
         System.out.println("Scrapped " + result.getTypes().size() + " types");
-        System.out.println("Got " + result.getErrors().size() + " scrapping errors");
+        ScrappingError.asSet().forEach(scrappingError -> System.out.println("Got " + scrappingError));
         return result;
 
     }
@@ -132,7 +128,7 @@ public class H2GeoScrapper {
      * Note that all these methods return {@link Observable}s
      */
     private class ResultBuilder {
-        private final String error;
+        private final ScrappingError error;
         private final String category;
         private final KeyValue categoryValue;
         private final WikiPage enWikiPage;
@@ -160,7 +156,7 @@ public class H2GeoScrapper {
             this.error = null;
         }
 
-        public ResultBuilder(ResultBuilder existing, String error) {
+        public ResultBuilder(ResultBuilder existing, ScrappingError error) {
             this.category = existing.category;
             this.categoryValue = existing.categoryValue;
             this.enWikiPage = existing.enWikiPage;
@@ -205,7 +201,6 @@ public class H2GeoScrapper {
                             .subscribeOn(Schedulers.io())
                             .retry(MAX_RETRY_COUNT)
                             .flatMapIterable(Page::getData)
-                            // filter out non wikiData projects and project not exactly about this key and value
                             .firstOrDefault(null, linkedProject -> linkedProject.getProjectId().equals("wikidata_org")
                                     && category.equals(linkedProject.getKey())
                                     && categoryValue.getValue().equals(linkedProject.getValue()))
@@ -225,8 +220,8 @@ public class H2GeoScrapper {
             return PoiType.from(category, categoryValue, enWikiPage, wikiPages, wikiData);
         }
 
-        public ScrappingError toScrappingError() {
-            return new ScrappingError(category, categoryValue == null ? "null" : categoryValue.getValue(), error);
+        public WikiError toWIkiError() {
+            return new WikiError(category, categoryValue == null ? "null" : categoryValue.getValue());
         }
 
         private Observable<ResultBuilder> doIfNoError(Work work) {
@@ -238,14 +233,14 @@ public class H2GeoScrapper {
         private ResultBuilder checkOnNode() {
             return error != null || enWikiPage.isOnNode()
                     ? this
-                    : new ResultBuilder(this, "not available on nodes");
+                    : new ResultBuilder(this, ScrappingError.NOT_AVAILABLE_ON_NODES);
         }
 
         private ResultBuilder withCategoryValue(KeyValue categoryValue) {
             ResultBuilder result = new ResultBuilder(category, categoryValue, wikiPages, enWikiPage, wikiDataId, wikiData);
             return categoryValue.isInWiki()
                     ? result
-                    : new ResultBuilder(result, "not in wiki");
+                    : new ResultBuilder(result, ScrappingError.NOT_IN_WIKI);
         }
 
         private ResultBuilder withWikiPages(List<WikiPage> wikiPages) {
@@ -255,7 +250,7 @@ public class H2GeoScrapper {
         private ResultBuilder withEnWikiPage(WikiPage enWikiPage) {
             return enWikiPage != null
                     ? new ResultBuilder(category, categoryValue, wikiPages, enWikiPage, wikiDataId, wikiData)
-                    : new ResultBuilder(this, "no en wiki page");
+                    : new ResultBuilder(this, ScrappingError.NOT_EN_WIKI);
         }
 
         private ResultBuilder withWikiData(JsonObject wikidata) {
@@ -265,7 +260,7 @@ public class H2GeoScrapper {
         private ResultBuilder withWikiDataId(LinkedProject wikiDataId) {
             return wikiDataId != null
                     ? new ResultBuilder(category, categoryValue, wikiPages, enWikiPage, wikiDataId.getId(), wikiData)
-                    : new ResultBuilder(this, "no corresponding wikidata project (must not use wildcards)");
+                    : new ResultBuilder(this, ScrappingError.NOT_CORRESPONDING_WIKIDATA_PROJECT);
         }
 
     }
