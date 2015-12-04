@@ -1,6 +1,8 @@
+<div class="input_wrapper">
+    <input type="text" placeholder="Search..." id="search_input" ng-model="search"
+           ng-style="{'width': (350 * nbColumn) +'px'}"/>
+</div>
 
-
-<input type="text" placeholder="Search" ng-model="search"/>
 <label>
     Keywords
     <input type="checkbox" ng-model="sf_keywords"/>
@@ -8,7 +10,8 @@
 
 <div class="cards">
     <div class="column_cards" ng-repeat="poiTypesFroColumn in poiTypesColumn ">
-        <div class="card_wrapper" ng-style="{'animation-delay': (100 * $index) + 'ms'}" ng-repeat="poiType in poiTypesFroColumn">
+        <div class="card_wrapper" ng-style="{'animation-delay': (100 * $index) + 'ms'}"
+             ng-repeat="poiType in poiTypesFroColumn">
             <div class="card">
                 <div class="name">{{poiType.label[language]}}</div>
                 <div class="description">{{poiType.description[language]}}</div>
@@ -19,7 +22,8 @@
                     <div class="tag" ng-repeat="tag in poiType.tags">
                         <span class="tag_key">{{tag.key}}</span><span
                             class="tag_value">{{tag.value}}</span><span
-                            class="possible_value" ng-repeat="possibleValue in tag.possibleValues">{{possibleValue}}<span
+                            class="possible_value"
+                            ng-repeat="possibleValue in tag.possibleValues">{{possibleValue}}<span
                             class="possible_divider" ng-if="$index < tag.possibleValues.length -1"> / </span></span>
                     </div>
                 </div>

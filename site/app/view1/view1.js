@@ -11,7 +11,7 @@ angular.module('myApp.view1', ['ngRoute'])
 
     .controller('View1Ctrl', ['$scope', '$http', '$window', '$timeout', function ($scope, $http, $window, $timeout) {
         $scope.poiTypesColumn = [];
-        var nbColumn = 1;
+        $scope.nbColumn = 1;
 
 
         $http.get('h2geo.json')
@@ -52,10 +52,10 @@ angular.module('myApp.view1', ['ngRoute'])
         $scope.$watch(function () {
             return $window.innerWidth;
         }, function (value) {
-            var newNbColumns = Math.floor(value / 500);
-            if (nbColumn != newNbColumns) {
-                console.log("change column " + nbColumn + " to " + newNbColumns);
-                nbColumn = newNbColumns;
+            var newNbColumns = Math.max(Math.floor(value / 500), 1);
+            if ($scope.nbColumn != newNbColumns) {
+                console.log("change column " + $scope.nbColumn + " to " + newNbColumns);
+                $scope.nbColumn = newNbColumns;
                 applySearch($scope.search);
             }
         });
@@ -123,14 +123,15 @@ angular.module('myApp.view1', ['ngRoute'])
         function updatePoiTypeColumn(poiTypesToOrder) {
             var newPoiTypesColumn = [];
             var i;
-            for (i = 0; i < nbColumn; i++) {
+            for (i = 0; i < $scope.nbColumn; i++) {
                 newPoiTypesColumn[i] = [];
             }
 
             for (i = 0; i < poiTypesToOrder.length; i++) {
-                newPoiTypesColumn[i % nbColumn].push(poiTypesToOrder[i]);
+                newPoiTypesColumn[i % $scope.nbColumn].push(poiTypesToOrder[i]);
             }
             $scope.poiTypesColumn = newPoiTypesColumn;
         }
+
 
     }]);
