@@ -1,6 +1,8 @@
 /* app css stylesheet */
 html {
     background: #eeeeee;
+    overflow: -moz-scrollbars-vertical;
+    overflow-y: scroll;
 }
 
 .column_cards {
@@ -124,6 +126,11 @@ html {
 .possible_value {
     color: #42A5F5;
     font-size: 1.2em;
+    padding-left: 1em;
+}
+
+.possible_divider {
+    padding-left: 1em;
 }
 
 .tags {
@@ -132,7 +139,7 @@ html {
 }
 
 .tag_key:after {
-    content: "= "
+    content: "="
 }
 
 nav {
@@ -281,14 +288,29 @@ nav {
 
 
 .animation_show {
-    transition: all linear 500ms;
+    padding: 20px;
+    transition: max-height linear 500ms;
     max-height: 800px;
     overflow: hidden;
 }
 
 .animation_hide{
-    transition: all linear 500ms;
+    transition: max-height linear 500ms;
     max-height: 0;
     overflow: hidden;
 }
 
+.pager {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+
+.pager button {
+    margin-right: 15px;
+    margin-left: 15px;
+    background-color: white;
+    border: none;
+    outline: none;
+}

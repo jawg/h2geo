@@ -9,9 +9,9 @@
 </label>
 
 <div class="cards">
-    <div class="column_cards" ng-repeat="poiTypesFroColumn in poiTypesColumn ">
+    <div class="column_cards" ng-repeat="poiTypesColumn in poiTypesColumns ">
         <div class="card_wrapper" ng-style="{'animation-delay': (100 * $index) + 'ms'}"
-             ng-repeat="poiType in poiTypesFroColumn">
+             ng-repeat="poiType in poiTypesColumn">
             <div class="card">
                 <div class="name">{{poiType.label[language]}}</div>
                 <div class="description">{{poiType.description[language]}}</div>
@@ -24,7 +24,7 @@
                             class="tag_value">{{tag.value}}</span><span
                             class="possible_value"
                             ng-repeat="possibleValue in tag.possibleValues">{{possibleValue}}<span
-                            class="possible_divider" ng-if="$index < tag.possibleValues.length -1"> / </span></span>
+                            class="possible_divider" ng-if="$index < tag.possibleValues.length -1">/</span></span>
                     </div>
                 </div>
                 <div class="technical_name"><a href="{{poiType.wikiUrl}}" target="_blank">{{poiType.name}}</a></div>

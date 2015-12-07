@@ -1,16 +1,16 @@
 'use strict';
 
-angular.module('myApp.view1', ['ngRoute'])
+angular.module('myApp.types', ['ngRoute'])
 
     .config(['$routeProvider', function ($routeProvider) {
-        $routeProvider.when('/view1', {
-            templateUrl: 'view1/view1.html',
-            controller: 'View1Ctrl'
+        $routeProvider.when('/types', {
+            templateUrl: 'types/types.html',
+            controller: 'TypesCtrl'
         });
     }])
 
-    .controller('View1Ctrl', ['$scope', '$http', '$window', '$timeout', function ($scope, $http, $window, $timeout) {
-        $scope.poiTypesColumn = [];
+    .controller('TypesCtrl', ['$scope', '$http', '$window', '$timeout', function ($scope, $http, $window, $timeout) {
+        $scope.poiTypesColumns = [];
         $scope.nbColumn = 1;
 
 
@@ -128,7 +128,7 @@ angular.module('myApp.view1', ['ngRoute'])
             for (i = 0; i < poiTypesToOrder.length; i++) {
                 newPoiTypesColumn[i % $scope.nbColumn].push(poiTypesToOrder[i]);
             }
-            $scope.poiTypesColumn = newPoiTypesColumn;
+            $scope.poiTypesColumns = newPoiTypesColumn;
         }
 
 

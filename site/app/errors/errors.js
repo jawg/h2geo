@@ -1,16 +1,16 @@
 'use strict';
 
-angular.module('myApp.view2', ['ngRoute'])
+angular.module('myApp.errors', ['ngRoute'])
 
     .config(['$routeProvider', function ($routeProvider) {
-        $routeProvider.when('/view2', {
-            templateUrl: 'view2/view2.html',
-            controller: 'View2Ctrl'
+        $routeProvider.when('/errors', {
+            templateUrl: 'errors/errors.html',
+            controller: 'ErrorsCtrl'
         });
     }])
 
 
-    .controller('View2Ctrl', ['$scope', '$http', '$window', '$timeout', function ($scope, $http, $window, $timeout) {
+    .controller('ErrorsCtrl', ['$scope', '$http', '$window', '$timeout', function ($scope, $http, $window, $timeout) {
         $scope.nbElementByPage = 15;
 
         $http.get('h2geo_errors.json')

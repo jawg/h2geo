@@ -19,7 +19,7 @@
             </div>
             <div class="pager">
                 <button ng-disabled="page[$index]==0" class="fa fa-2x fa-angle-left" ng-click="previousPage($index)"></button>
-                {{page[$index]+1}}/{{nbPage[$index]}}
+                {{page[$index]+1}} / {{nbPage[$index]}}
                 <button ng-disabled="page[$index]== nbPage[$index]-1" class="fa fa-2x fa-angle-right" ng-click="nextPage($index)"></button>
             </div>
         </div>

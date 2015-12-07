@@ -1,10 +1,10 @@
 'use strict';
 
-describe('myApp.view2 module', function() {
+describe('myApp.errors module', function() {
 
   beforeEach(module('myApp.view2'));
 
-  describe('view2 controller', function(){
+  describe('errors controller', function(){
 
     it('should ....', inject(function($controller) {
       //spec body
