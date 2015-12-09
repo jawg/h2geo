@@ -3,6 +3,7 @@ html {
     background: #eeeeee;
     overflow: -moz-scrollbars-vertical;
     overflow-y: scroll;
+    font-family: sans-serif;
 }
 
 body {
