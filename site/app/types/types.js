@@ -52,7 +52,6 @@ angular.module('myApp.types', ['ngRoute'])
         }, function (value) {
             var newNbColumns = Math.max(Math.floor(value / 400), 1);
             if ($scope.nbColumn != newNbColumns) {
-                console.log("change column " + $scope.nbColumn + " to " + newNbColumns);
                 $scope.nbColumn = newNbColumns;
                 applySearch($scope.search);
             }
@@ -84,8 +83,6 @@ angular.module('myApp.types', ['ngRoute'])
         }
 
         function applySearch(search) {
-            console.log(search);
-
             var poiTypesToOrder = [];
 
             if (!search) {

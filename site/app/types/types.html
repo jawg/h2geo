@@ -2,11 +2,12 @@
     <input type="text" placeholder="Search..." id="search_input" ng-model="search"
            ng-style="{'width': (350 * nbColumn) +'px'}"/>
 </div>
-
-<label>
-    Keywords
-    <input type="checkbox" ng-model="sf_keywords"/>
-</label>
+<div class="input_wrapper">
+    <label>
+        <input id="chk_keyword" type="checkbox" ng-model="sf_keywords"/>
+        <label for="chk_keyword" class="label_chk">Keywords</label>
+    </label>
+</div>
 
 <div class="cards">
     <div class="column_cards" ng-repeat="poiTypesColumn in poiTypesColumns ">
