@@ -98,9 +98,15 @@ angular.module('h2GeoApp.types', ['ngRoute'])
                 // check if search is in name
                 if (poiType.name && poiType.name.toLowerCase().indexOf(search.toLowerCase()) > -1) {
                     poiTypesToOrder.push(poiType);
+                    continue;
                 }
-                //check if search is in keywords
-                else if ($scope.sf_keywords && poiType.keyWords && poiType.keyWords[$scope.language]) {
+                //check if search is in label of the language
+                if (poiType.label && poiType.label[$scope.language] && poiType.label[$scope.language].toLowerCase().indexOf(search.toLowerCase()) > -1) {
+                    poiTypesToOrder.push(poiType);
+                    continue;
+                }
+                //check if search is in keywords of the language
+                if ($scope.sf_keywords && poiType.keyWords && poiType.keyWords[$scope.language]) {
                     for (var i = 0; i < poiType.keyWords[$scope.language].length; i++) {
                         var keyword = poiType.keyWords[$scope.language][i];
                         if (keyword && keyword.toLowerCase().indexOf(search.toLowerCase()) > -1) {
