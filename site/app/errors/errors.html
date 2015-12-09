@@ -7,8 +7,8 @@
         <div class="error_header" ng-click="expandError($index)">
             <div>{{error_category.errorMessage}}</div>
             <div class="icons">
-                <i class="fa fa-lg fa-info-circle"></i>
-                <i class="fa fa-2x fa-angle-down rotate" ng-class="{down: expandCategories[$index]}"></i>
+              <div eb-popover eb-popover-position="bottom" eb-popover-content="{{error_category.errorDescription}}"><i class="fa fa-lg fa-info-circle"></i></div>
+              <i class="fa fa-2x fa-angle-down rotate" ng-class="{down: expandCategories[$index]}"></i>
             </div>
         </div>
         <div ng-class="{'animation_show': expandCategories[$index], 'animation_hide': !expandCategories[$index]}"

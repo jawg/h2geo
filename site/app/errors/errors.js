@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('myApp.errors', ['ngRoute'])
+angular.module('myApp.errors', ['ngRoute', 'myApp.errors.ebPopover-directive'])
 
     .config(['$routeProvider', function ($routeProvider) {
         $routeProvider.when('/errors', {
@@ -10,7 +10,7 @@ angular.module('myApp.errors', ['ngRoute'])
     }])
 
 
-    .controller('ErrorsCtrl', ['$scope', '$http', '$window', '$timeout', function ($scope, $http, $window, $timeout) {
+    .controller('ErrorsCtrl', ['$scope', '$http', function ($scope, $http) {
         $scope.nbElementByPage = 15;
 
         $http.get('h2geo_errors.json')
@@ -24,6 +24,20 @@ angular.module('myApp.errors', ['ngRoute'])
                     $scope.expandCategories[i] = false;
                     $scope.page[i] = 0;
                     $scope.nbPage[i] = Math.ceil($scope.errors[i].errors.length / $scope.nbElementByPage);
+                    switch ($scope.errors[i].errorCode) {
+                        case 1:
+                            $scope.errors[i].errorDescription = 'There is at least one element in OSM with the given key/value tag but no wiki page.';
+                            break;
+                        case 2:
+                            $scope.errors[i].errorDescription = 'There was no English wiki page for the given key/value.';
+                            break;
+                        case 3:
+                            $scope.errors[i].errorDescription = 'This type of Poi was not available on nodes.';
+                            break;
+                        case 4:
+                            $scope.errors[i].errorDescription = 'The wikidata link is missing on the osm wiki page. The wikidata is used to have all the translations of the tag.';
+                            break;
+                    }
                 }
                 console.log($scope.errors)
 
