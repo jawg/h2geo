@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('myApp.types', ['ngRoute'])
+angular.module('h2GeoApp.types', ['ngRoute'])
 
     .config(['$routeProvider', function ($routeProvider) {
         $routeProvider.when('/types', {

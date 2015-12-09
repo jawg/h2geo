@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('myApp.errors', ['ngRoute', 'myApp.errors.ebPopover-directive'])
+angular.module('h2GeoApp.errors', ['ngRoute', 'h2GeoApp.errors.ebPopover-directive'])
 
     .config(['$routeProvider', function ($routeProvider) {
         $routeProvider.when('/errors', {

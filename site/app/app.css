@@ -5,6 +5,10 @@ html {
     overflow-y: scroll;
 }
 
+body {
+    margin: 0;
+}
+
 .column_cards {
     max-width: 400px;
     min-width: 300px;

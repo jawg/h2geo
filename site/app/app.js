@@ -1,11 +1,10 @@
 'use strict';
 
 // Declare app level module which depends on views, and components
-angular.module('myApp', [
+angular.module('h2GeoApp', [
   'ngRoute',
-  'myApp.errors',
-  'myApp.types',
-  'myApp.version'
+  'h2GeoApp.errors',
+  'h2GeoApp.types'
 ]).
 config(['$routeProvider', function($routeProvider) {
   $routeProvider.otherwise({redirectTo: '/types'});

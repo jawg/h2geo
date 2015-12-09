@@ -7,7 +7,7 @@ without the express written permission of eBusiness Information.
 /**
  * Created by Anthony Salembier and Jason Conard on 17/07/15.
  */
-angular.module('myApp.errors.ebPopover-directive', [])
+angular.module('h2GeoApp.errors.ebPopover-directive', [])
 
     .directive('ebPopover', ['$timeout', function($timeout) {
   return {
