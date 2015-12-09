@@ -1,5 +1,5 @@
 ./gradlew run || exit
-cp -r site build
+cp -r site/app/* build/site
 cd build/site
 rm .gitignore
 git init
