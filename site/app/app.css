@@ -286,16 +286,18 @@ nav {
     transform:rotateX(180deg);
 }
 
+.errors_list{
+    padding: 20px;
+}
 
 .animation_show {
-    padding: 20px;
-    transition: max-height linear 500ms;
+    transition: all linear 500ms;
     max-height: 800px;
     overflow: hidden;
 }
 
 .animation_hide{
-    transition: max-height linear 500ms;
+    transition: all linear 500ms;
     max-height: 0;
     overflow: hidden;
 }
@@ -304,7 +306,6 @@ nav {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 10px;
 }
 
 .pager button {
@@ -313,4 +314,12 @@ nav {
     background-color: white;
     border: none;
     outline: none;
+}
+
+.error_element {
+    padding-bottom: 10px;
+}
+
+.error_element > a{
+    text-decoration: none;
 }

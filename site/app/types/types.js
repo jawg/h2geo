@@ -50,7 +50,7 @@ angular.module('myApp.types', ['ngRoute'])
         $scope.$watch(function () {
             return $window.innerWidth;
         }, function (value) {
-            var newNbColumns = Math.max(Math.floor(value / 500), 1);
+            var newNbColumns = Math.max(Math.floor(value / 400), 1);
             if ($scope.nbColumn != newNbColumns) {
                 console.log("change column " + $scope.nbColumn + " to " + newNbColumns);
                 $scope.nbColumn = newNbColumns;

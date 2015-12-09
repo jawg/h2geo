@@ -37,12 +37,10 @@ angular.module('myApp.errors', ['ngRoute'])
         };
 
         $scope.nextPage = function (index) {
-            $scope.page[index] ++;
+            $scope.page[index]++;
         };
 
         $scope.previousPage = function (index) {
-            $scope.page[index] --;
+            $scope.page[index]--;
         };
-
-
     }]);

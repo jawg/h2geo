@@ -20,7 +20,7 @@
     "postinstall": "bower install",
 
     "prestart": "npm install",
-    "start": "http-server -a localhost -p 8080 -c-1",
+    "start": "http-server -p 8080 -c-1",
 
     "pretest": "npm install",
     "test": "karma start karma.conf.js",
