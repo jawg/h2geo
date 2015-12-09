@@ -176,12 +176,19 @@ nav {
     text-decoration: none;
 }
 
-.nav_item:hover {
+.nav_item > i{
+    vertical-align: middle;
+}
 
+.nav_item:hover {
     box-shadow: 0 0 6px 1px rgba(0, 0, 0, 0.4);
     background-color: #1E88E5;
     border-color: #0D47A1;
+}
 
+.logo {
+    display: flex;
+    align-items: center;
 }
 
 /*transitions*/
@@ -355,7 +362,7 @@ nav {
 [type="checkbox"]:checked + label:after {
     content: '✔';
     position: absolute;
-    top: -2px; left: 0px;
+    top: -2px; left: 0;
     font-size: 21px;
     color: #1E88E5;
     transition: all .2s;
