@@ -160,6 +160,10 @@ nav {
     padding-left: 10px;
 }
 
+.nav_title > i {
+    font-size: 0.6em;
+}
+
 .nav_items {
     height: 50px;
     display: inline-block;
@@ -383,5 +387,7 @@ nav {
     color: grey;
 }
 
-
+.provided_content {
+    margin-left: 25px;
+}
 
