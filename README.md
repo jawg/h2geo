@@ -3,6 +3,9 @@
 h2geo (HitchHiker's Guide to OpenStreetMap) allows the creation of a **data type descriptor** for OpenStreetMap.  
 Its purpose is to provide an **easy** & **localized** search for data types.
 
+To better understand h2geo, check out this generated [page](http://mapsquare.github.io/h2geo) 
+where you can see all the data types validated by h2geo and the others.
+
 =====
 
 ### Why are we doing this?
