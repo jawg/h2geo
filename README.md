@@ -58,7 +58,7 @@ No duplicates, no "false-positive" results.
 ### What h2geo is not
 h2geo is not meant to have **all** data-types of OpenStreetMap.  
 Its purpose is to provide an easy-to-find tool for the **most-common** data types.  
-Only `amenity`, `shop`, `highway`, `tourism`, `historic` tag keys are taken into account.
+Only `amenity`, `shop`, `highway`, `tourism`, `historic`, `emergency` tag keys are taken into account.
 
 =====
 
@@ -67,55 +67,57 @@ For now, the h2geo.json is available through GitHub pages:
 [Get it here](http://mapsquare.github.io/h2geo/h2geo.json)
 
 ### Run the application !
-With gradle:
+With gradle, result is output in `build/site/h2geo.json` and `build/site/h2geo_errors.json`:
 
     ./gradlew run
 
-With maven:
+With maven , result is output in `h2geo.json` and `h2geo_errors.json`:
 
     mvn clean compile assembly:single
     java -jar target/h2geo-{version}-jar-with-dependencies.jar
 
-Result is output in `h2geo_output.json`
 
 ### File format
-	[
-		{
-			"name":"a technical name for the type",
-			"label":{
-				"en":"the english display name of the type",
-				"fr":"le nom du type",
-				...
-				}
-			"description":{
-				"en":"the english description of the type",
-				"fr":"la description du type",
-				...
-				}
-			"keywords":{
-				"en":["keywords", "associated", "to", "the", "type"],
-				"fr":["mot-clés", "associés", "au", "type"],
-				...
-				},
-			"usageCount": 12345,
-			"tags": [
-					{
-						"key":"tag key that should always be set for the type",
-						"value":"value to be set"
-					},
-					{
-						"key":"tag key than can be set for the type"
-					},
-					{
-						"key":"tag key than can be set for the type",
-						"possibleValues": ["possible", "values"]
-					},
-					{ ... }
-				]
-		},
-		{ ... }
-	]
-
+    {
+        "h2GeoVersion": "0.5.0-SNAPSHOT",
+        "generationDate": "2015-12-09T11:31:29.858",
+        "data": [
+            {
+                "name":"a technical name for the type",
+                "label":{
+                    "en":"the english display name of the type",
+                    "fr":"le nom du type",
+                    ...
+                    }
+                "description":{
+                    "en":"the english description of the type",
+                    "fr":"la description du type",
+                    ...
+                    }
+                "keywords":{
+                    "en":["keywords", "associated", "to", "the", "type"],
+                    "fr":["mot-clés", "associés", "au", "type"],
+                    ...
+                    },
+                "usageCount": 12345,
+                "tags": [
+                        {
+                            "key":"tag key that should always be set for the type",
+                            "value":"value to be set"
+                        },
+                        {
+                            "key":"tag key than can be set for the type"
+                        },
+                        {
+                            "key":"tag key than can be set for the type",
+                            "possibleValues": ["possible", "values"]
+                        },
+                        { ... }
+                    ]
+            },
+            { ... }
+        ]
+    }
 
 ### How it works
 The program fetches data from [Tagsinfo](http://taginfo.openstreetmap.org/) and [Wikidata](https://www.wikidata.org/)
@@ -123,7 +125,7 @@ and aggregates it for create the json file. The data fetched from TagsInfo comes
 [OpenStreetMap Wiki](http://wiki.openstreetmap.org). If the generated json file is incomplete or inaccurate, a simple
 edit on the wiki should be just what's needed to correct it. We use Wikidata to add translations for the types names and
 description. At the moment, we retrieve all possible values of tag keys `amenity`, `shop`, `highway`, `tourism`,
-`historic` that have an associated wikipage,  can be applied on nodes and have an associated Wikidata entry.
+`historic`, `emergency` that have an associated wikipage,  can be applied on nodes and have an associated Wikidata entry.
 
 =====
 
@@ -147,7 +149,7 @@ We welcome any contributors with issues / pull requests.
 Contact the team: @DesignMyApp
 
 ### License
-Copyright 2015 eBusiness Information
+Copyright 2016 eBusiness Information
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
 
