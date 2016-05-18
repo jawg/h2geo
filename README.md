@@ -3,7 +3,7 @@
 h2geo (HitchHiker's Guide to OpenStreetMap) allows the creation of a **data type descriptor** for OpenStreetMap.  
 Its purpose is to provide an **easy** & **localized** search for data types.
 
-To better understand h2geo, check out this generated [page](http://mapsquare.github.io/h2geo) 
+To better understand h2geo, check out this generated [page](http://jawg.github.io/h2geo) 
 where you can see all the data types validated by h2geo and the others.
 
 =====
@@ -64,7 +64,7 @@ Only `amenity`, `shop`, `highway`, `tourism`, `historic`, `emergency` tag keys a
 
 ### Get it
 For now, the h2geo.json is available through GitHub pages:  
-[Get it here](http://mapsquare.github.io/h2geo/h2geo.json)
+[Get it here](http://jawg.github.io/h2geo/h2geo.json)
 
 ### Run the application !
 With gradle, result is output in `build/site/h2geo.json` and `build/site/h2geo_errors.json`:
@@ -133,7 +133,7 @@ description. At the moment, we retrieve all possible values of tag keys `amenity
 Just edit the osm wiki ! if you want to add a major type let us know with an issue (or make a pull request)
 
 ### They are using it:
-[osm-contributor](https://github.com/mapsquare/osm-contributor)
+[osm-contributor](https://github.com/jawg/osm-contributor)
 
 ### Contributors
 This app is actively developed by:
