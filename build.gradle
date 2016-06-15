@@ -25,7 +25,7 @@ license {
     header = file("LICENSE-HEADER")
     strictCheck = true
     ext.year = Calendar.getInstance().get(Calendar.YEAR)
-    ext.name = 'eBusiness Information'
+    ext.name = 'Jawg'
     ext.program = 'h2geo'
 }
 
@@ -34,8 +34,8 @@ compileJava.dependsOn('licenseFormat')
 task updateVersion {
     def outputDir = file("src/main/java")
     doFirst {
-        def srcFile = new File(outputDir, "io/mapsquare/h2geo/BuildProperties.java")
-        srcFile.write("""package io.mapsquare.h2geo;
+        def srcFile = new File(outputDir, "io/jawg/h2geo/BuildProperties.java")
+        srcFile.write("""package io.jawg.h2geo;
 
 // Class generated with the updateVersion gradle task, do not edit manually
 public class BuildProperties {
@@ -48,6 +48,6 @@ public class BuildProperties {
 compileJava.dependsOn updateVersion
 
 task(run, dependsOn: 'classes', type: JavaExec) {
-    main = 'io.mapsquare.h2geo.Main'
+    main = 'io.jawg.h2geo.Main'
     classpath = sourceSets.main.runtimeClasspath
 }

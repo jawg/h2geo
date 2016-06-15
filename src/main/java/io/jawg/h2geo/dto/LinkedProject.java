@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2016 eBusiness Information
+ * Copyright (C) 2016 Jawg
  *
  * This file is part of h2geo.
  *
@@ -15,11 +15,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.mapsquare.h2geo.model;
+package io.jawg.h2geo.dto;
 
 import com.google.gson.annotations.SerializedName;
 
-public class WikiError implements Comparable<WikiError> {
+public class LinkedProject {
+
+    @SerializedName("project_id")
+    private String projectId;
+
+    @SerializedName("doc_url")
+    private String docUrl;
 
     @SerializedName("key")
     private String key;
@@ -27,12 +33,20 @@ public class WikiError implements Comparable<WikiError> {
     @SerializedName("value")
     private String value;
 
-    public WikiError() {
+    public String getProjectId() {
+        return projectId;
     }
 
-    public WikiError(String key, String value) {
-        this.key = key;
-        this.value = value;
+    public void setProjectId(String projectId) {
+        this.projectId = projectId;
+    }
+
+    public String getDocUrl() {
+        return docUrl;
+    }
+
+    public void setDocUrl(String docUrl) {
+        this.docUrl = docUrl;
     }
 
     public String getKey() {
@@ -51,9 +65,7 @@ public class WikiError implements Comparable<WikiError> {
         this.value = value;
     }
 
-    @Override
-    public int compareTo(WikiError scrappingError) {
-        int keyComparison = key.compareTo(scrappingError.key);
-        return keyComparison != 0 ? keyComparison : value.compareTo(scrappingError.value);
+    public String getId() {
+        return docUrl.replace("https://www.wikidata.org/wiki/", "");
     }
 }

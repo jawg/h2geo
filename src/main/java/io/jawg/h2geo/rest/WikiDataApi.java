@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2016 eBusiness Information
+ * Copyright (C) 2016 Jawg
  *
  * This file is part of h2geo.
  *
@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.mapsquare.h2geo.rest;
+package io.jawg.h2geo.rest;
 
 
 import com.google.gson.JsonObject;

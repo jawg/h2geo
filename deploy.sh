@@ -4,7 +4,7 @@ cd build/site
 rm .gitignore
 git init
 git config user.name "Travis build"
-git config user.email "tlorrain@excilys.com"
+git config user.email "lortola@jawg.io"
 git add .
 git commit -m "Deploy last h2geo version"
 # Force push from the current repo's master branch to the remote

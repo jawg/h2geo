@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2016 eBusiness Information
+ * Copyright (C) 2016 Jawg
  *
  * This file is part of h2geo.
  *
@@ -15,40 +15,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.mapsquare.h2geo.dto;
+package io.jawg.h2geo.dto;
 
 import com.google.gson.annotations.SerializedName;
 
-public class KeyValue {
+import java.util.List;
 
-    @SerializedName("value")
-    private String value;
-    @SerializedName("in_wiki")
-    private boolean inWiki;
-    @SerializedName("count")
-    private int count;
+/**
+ * Created by fredszaq on 19/10/15.
+ */
+public class Page<T> {
 
-    public String getValue() {
-        return value;
+    @SerializedName("data")
+    private List<T> data;
+
+    public List<T> getData() {
+        return data;
     }
 
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    public boolean isInWiki() {
-        return inWiki;
-    }
-
-    public void setInWiki(boolean inWiki) {
-        this.inWiki = inWiki;
-    }
-
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
+    public void setData(List<T> data) {
+        this.data = data;
     }
 }

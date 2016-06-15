@@ -1,4 +1,4 @@
-package io.mapsquare.h2geo;
+package io.jawg.h2geo;
 
 // Class generated with the updateVersion gradle task, do not edit manually
 public class BuildProperties {

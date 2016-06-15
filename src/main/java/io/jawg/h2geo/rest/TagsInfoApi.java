@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2016 eBusiness Information
+ * Copyright (C) 2016 Jawg
  *
  * This file is part of h2geo.
  *
@@ -15,17 +15,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.mapsquare.h2geo.rest;
+package io.jawg.h2geo.rest;
 
-import io.mapsquare.h2geo.dto.KeyValue;
-import io.mapsquare.h2geo.dto.LinkedProject;
-import io.mapsquare.h2geo.dto.Page;
-import io.mapsquare.h2geo.dto.WikiPage;
+import io.jawg.h2geo.dto.WikiPage;
+import io.jawg.h2geo.dto.KeyValue;
+import io.jawg.h2geo.dto.LinkedProject;
+import io.jawg.h2geo.dto.Page;
 import retrofit.http.GET;
 import retrofit.http.Query;
 import rx.Observable;
-
-import java.util.List;
 
 public interface TagsInfoApi {
 

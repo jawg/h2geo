@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2016 eBusiness Information
+ * Copyright (C) 2016 Jawg
  *
  * This file is part of h2geo.
  *
@@ -15,12 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.mapsquare.h2geo;
+package io.jawg.h2geo;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import io.mapsquare.h2geo.model.H2GeoRun;
-import io.mapsquare.h2geo.model.ScrappingError;
+import io.jawg.h2geo.model.H2GeoRun;
+import io.jawg.h2geo.model.ScrappingError;
 
 import java.io.File;
 import java.io.FileOutputStream;

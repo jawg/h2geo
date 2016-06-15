@@ -146,10 +146,10 @@ This app is actively developed by:
 We welcome any contributors with issues / pull requests.
 
 ### Tweet about it
-Contact the team: @DesignMyApp
+Contact the team: @jawgio
 
 ### License
-Copyright 2016 eBusiness Information
+Copyright 2016 Jawg
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
 

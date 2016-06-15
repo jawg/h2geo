@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <!-- Project descriptor -->
     <modelVersion>4.0.0</modelVersion>
-    <groupId>io.mapsquare</groupId>
+    <groupId>io.jawg</groupId>
     <artifactId>h2geo</artifactId>
     <version>0.5.0-SNAPSHOT</version>
     <packaging>jar</packaging>
@@ -66,7 +66,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>io.mapsquare.h2geo.Main</mainClass>
+                            <mainClass>io.jawg.h2geo.Main</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

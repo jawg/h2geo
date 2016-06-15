@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2016 eBusiness Information
+ * Copyright (C) 2016 Jawg
  *
  * This file is part of h2geo.
  *
@@ -15,20 +15,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.mapsquare.h2geo;
+package io.jawg.h2geo;
 
 import com.google.gson.JsonObject;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
-import io.mapsquare.h2geo.dto.KeyValue;
-import io.mapsquare.h2geo.dto.LinkedProject;
-import io.mapsquare.h2geo.dto.Page;
-import io.mapsquare.h2geo.dto.WikiPage;
-import io.mapsquare.h2geo.model.PoiType;
-import io.mapsquare.h2geo.model.ScrappingError;
-import io.mapsquare.h2geo.model.WikiError;
-import io.mapsquare.h2geo.rest.TagsInfoApi;
-import io.mapsquare.h2geo.rest.WikiDataApi;
+import io.jawg.h2geo.dto.KeyValue;
+import io.jawg.h2geo.dto.LinkedProject;
+import io.jawg.h2geo.dto.Page;
+import io.jawg.h2geo.dto.WikiPage;
+import io.jawg.h2geo.model.PoiType;
+import io.jawg.h2geo.model.ScrappingError;
+import io.jawg.h2geo.model.WikiError;
+import io.jawg.h2geo.rest.TagsInfoApi;
+import io.jawg.h2geo.rest.WikiDataApi;
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
 import retrofit.RxJavaCallAdapterFactory;
@@ -43,6 +43,7 @@ import java.util.TreeSet;
 public class H2GeoScrapper {
 
     public static final int MAX_RETRY_COUNT = 10;
+    public static final long SLEEP_TIME = 2000;
     private TagsInfoApi tagsInfoApi;
     private WikiDataApi wikiDataApi;
 
@@ -53,6 +54,11 @@ public class H2GeoScrapper {
         okClient.interceptors().add(chain -> {
             Request request = chain.request();
             System.out.println(request.urlString());
+            try {
+                Thread.sleep(SLEEP_TIME);
+            } catch (InterruptedException e) {
+                throw new IllegalStateException(e);
+            }
             return chain.proceed(request);
         });
 
