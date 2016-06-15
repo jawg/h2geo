@@ -1,5 +1,7 @@
 # h2geo
 
+[![Build Status](https://travis-ci.org/jawg/h2geo.svg?branch=master)](https://travis-ci.org/jawg/h2geo)
+
 h2geo (HitchHiker's Guide to OpenStreetMap) allows the creation of a **data type descriptor** for OpenStreetMap.  
 Its purpose is to provide an **easy** & **localized** search for data types.
 
