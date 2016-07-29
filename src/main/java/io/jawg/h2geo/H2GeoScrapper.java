@@ -25,6 +25,7 @@ import io.jawg.h2geo.dto.LinkedProject;
 import io.jawg.h2geo.dto.Page;
 import io.jawg.h2geo.dto.WikiPage;
 import io.jawg.h2geo.model.PoiType;
+import io.jawg.h2geo.model.PoiTypeTag;
 import io.jawg.h2geo.model.ScrappingError;
 import io.jawg.h2geo.model.WikiError;
 import io.jawg.h2geo.rest.TagsInfoApi;
@@ -112,7 +113,16 @@ public class H2GeoScrapper {
         System.out.println("Scrapped " + result.getTypes().size() + " types");
         ScrappingError.asSet().forEach(scrappingError -> System.out.println("Got " + scrappingError));
         return result;
+    }
 
+    public void getPossibleValues(PoiTypeTag poiTypeTag) {
+        tagsInfoApi.getPossibleValues(poiTypeTag.getKey(), "1", "10", "count_ways", "desc")
+                .subscribeOn(Schedulers.io())  // parallel processing
+                .subscribe(tagInfoValue -> {
+                    tagInfoValue.getValues().stream().filter(value -> value.getFraction() * 100 > 4).forEach(value -> {
+                        poiTypeTag.getPossibleValues().add(value.getValue());
+                    });
+                });
     }
 
     /**

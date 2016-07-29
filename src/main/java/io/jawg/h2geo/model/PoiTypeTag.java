@@ -19,6 +19,8 @@ package io.jawg.h2geo.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -41,6 +43,10 @@ public class PoiTypeTag {
 
     @SerializedName("possibleValues")
     private List<String> possibleValues;
+
+    public PoiTypeTag() {
+        possibleValues = new ArrayList<>();
+    }
 
     public Map<String, String> getLabel() {
         return label;
@@ -87,7 +93,7 @@ public class PoiTypeTag {
     }
 
     public void setPossibleValues(List<String> possibleValues) {
-        this.possibleValues = possibleValues;
+        this.possibleValues = Collections.synchronizedList(possibleValues);
     }
 
 }

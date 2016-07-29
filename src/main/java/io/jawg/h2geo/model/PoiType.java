@@ -21,10 +21,14 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
-import io.jawg.h2geo.dto.WikiPage;
+import io.jawg.h2geo.H2GeoScrapper;
 import io.jawg.h2geo.dto.KeyValue;
+import io.jawg.h2geo.dto.WikiPage;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class PoiType implements Comparable<PoiType> {
 
@@ -135,6 +139,8 @@ public class PoiType implements Comparable<PoiType> {
             }
         }
 
+        H2GeoScrapper h2GeoScrapper = new H2GeoScrapper();
+
         for (WikiPage page : wikiPages) {
             poiType.getDescription().put(page.getLang(), page.getDescription());
         }
@@ -159,11 +165,11 @@ public class PoiType implements Comparable<PoiType> {
             String[] split = tag.split("=");
             PoiTypeTag poiTypeTag = new PoiTypeTag();
             poiTypeTag.setKey(split[0]);
-            if (split.length > 1 && !split[1].equals("*")) {
-                poiTypeTag.setPossibleValues(Arrays.asList(split[1].split("/")));
-            }
             poiType.getTags().add(poiTypeTag);
         }
+
+        poiType.getTags().forEach(h2GeoScrapper::getPossibleValues);
+
         return poiType;
     }
 

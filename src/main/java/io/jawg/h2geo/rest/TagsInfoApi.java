@@ -17,10 +17,11 @@
  */
 package io.jawg.h2geo.rest;
 
-import io.jawg.h2geo.dto.WikiPage;
 import io.jawg.h2geo.dto.KeyValue;
 import io.jawg.h2geo.dto.LinkedProject;
 import io.jawg.h2geo.dto.Page;
+import io.jawg.h2geo.dto.WikiPage;
+import io.jawg.h2geo.model.TagInfoValue;
 import retrofit.http.GET;
 import retrofit.http.Query;
 import rx.Observable;
@@ -36,5 +37,8 @@ public interface TagsInfoApi {
 
     @GET("tag/projects")
     public Observable<Page<LinkedProject>> getLinkedProjects(@Query("key") String key, @Query("value") String value);
+
+    @GET("key/values")
+    public Observable<TagInfoValue> getPossibleValues(@Query("key") String key, @Query("page") String page, @Query("rp") String limit, @Query("sortname") String sort, @Query("sortorder") String sortOrder);
 
 }
