@@ -16,12 +16,15 @@
  * You should have received a copy of the GNU General Public License
  * along with OSM Contributor.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.jawg.h2geo.parser;
+package io.jawg.h2geo.parser.impl;
+
+import io.jawg.h2geo.parser.TagParser;
+import io.jawg.h2geo.parser.Type;
 
 import java.util.List;
 
 
-public class OpeningTimeTagParserImpl implements TagParser {
+public class OpeningTimeTagParser implements TagParser {
 
     public static final String PATTERN_MONTH = "(\\bJan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec\\b)";
 
@@ -45,8 +48,8 @@ public class OpeningTimeTagParserImpl implements TagParser {
     public static final String PATTERN_FINAL = PATTERN + "(;\\s?" + PATTERN + ")*";
 
     @Override
-    public TagItem.Type getType() {
-        return TagItem.Type.OPENING_HOURS;
+    public Type getType() {
+        return Type.OPENING_HOURS;
     }
 
     @Override
@@ -55,13 +58,13 @@ public class OpeningTimeTagParserImpl implements TagParser {
     }
 
     @Override
-    public boolean support(String value) {
+    public boolean supports(String value) {
         return value == null || value.equals("24/7") || value.matches(PATTERN_FINAL);
     }
 
     @Override
     public int getPriority() {
-        return TagParser.PRIORITY_HIGH;
+        return Priority.HIGHEST;
     }
 
     @Override

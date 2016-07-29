@@ -1,14 +1,14 @@
 /**
  * Copyright (C) 2016 Jawg
- *
+ * <p>
  * This file is part of h2geo.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,6 +18,7 @@
 package io.jawg.h2geo.model;
 
 import com.google.gson.annotations.SerializedName;
+import io.jawg.h2geo.parser.Type;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,74 +27,84 @@ import java.util.Map;
 
 public class PoiTypeTag {
 
-    @SerializedName("label")
-    private Map<String, String> label;
+  @SerializedName("label")
+  private Map<String, String> label;
 
-    @SerializedName("key")
-    private String key;
+  @SerializedName("key")
+  private String key;
 
-    @SerializedName("value")
-    private String value;
+  @SerializedName("value")
+  private String value;
 
-    @SerializedName("mandatory")
-    private Boolean mandatory;
+  @SerializedName("type")
+  private Type type;
 
-    @SerializedName("implied")
-    private Boolean implied;
+  @SerializedName("mandatory")
+  private Boolean mandatory;
 
-    @SerializedName("possibleValues")
-    private List<String> possibleValues;
+  @SerializedName("implied")
+  private Boolean implied;
 
-    public PoiTypeTag() {
-        possibleValues = new ArrayList<>();
-    }
+  @SerializedName("values")
+  private List<String> values;
 
-    public Map<String, String> getLabel() {
-        return label;
-    }
+  public PoiTypeTag() {
+    values = new ArrayList<>();
+  }
 
-    public void setLabel(Map<String, String> label) {
-        this.label = label;
-    }
+  public Map<String, String> getLabel() {
+    return label;
+  }
 
-    public String getKey() {
-        return key;
-    }
+  public void setLabel(Map<String, String> label) {
+    this.label = label;
+  }
 
-    public void setKey(String key) {
-        this.key = key;
-    }
+  public String getKey() {
+    return key;
+  }
 
-    public String getValue() {
-        return value;
-    }
+  public void setKey(String key) {
+    this.key = key;
+  }
 
-    public void setValue(String value) {
-        this.value = value;
-    }
+  public String getValue() {
+    return value;
+  }
 
-    public Boolean getMandatory() {
-        return mandatory;
-    }
+  public void setValue(String value) {
+    this.value = value;
+  }
 
-    public void setMandatory(Boolean mandatory) {
-        this.mandatory = mandatory;
-    }
+  public Boolean getMandatory() {
+    return mandatory;
+  }
 
-    public Boolean getImplied() {
-        return implied;
-    }
+  public void setMandatory(Boolean mandatory) {
+    this.mandatory = mandatory;
+  }
 
-    public void setImplied(Boolean implied) {
-        this.implied = implied;
-    }
+  public Boolean getImplied() {
+    return implied;
+  }
 
-    public List<String> getPossibleValues() {
-        return possibleValues;
-    }
+  public void setImplied(Boolean implied) {
+    this.implied = implied;
+  }
 
-    public void setPossibleValues(List<String> possibleValues) {
-        this.possibleValues = Collections.synchronizedList(possibleValues);
-    }
+  public List<String> getValues() {
+    return values;
+  }
 
+  public void setValues(List<String> values) {
+    this.values = Collections.synchronizedList(values);
+  }
+
+  public Type getType() {
+    return type;
+  }
+
+  public void setType(Type type) {
+    this.type = type;
+  }
 }

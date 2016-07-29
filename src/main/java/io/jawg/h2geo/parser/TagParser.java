@@ -20,24 +20,31 @@ package io.jawg.h2geo.parser;
 
 import java.util.List;
 
-public interface TagParser {
+/**
+ * A Tag parser parses key / values tags and guesses out which type the Tag is.
+ */
+public interface TagParser extends Comparable<TagParser> {
 
-    int PRIORITY_LOW = 100;
-
-    int PRIORITY_NOT_IMPORTANT = 75;
-
-    int PRIORITY_NORMAL = 50;
-
-    int PRIORITY_IMPORTANT = 25;
-
-    int PRIORITY_HIGH = 0;
-
-    TagItem.Type getType();
+    interface Priority {
+        int LOWEST = 100;
+        int LOW = 75;
+        int NORMAL = 50;
+        int HIGH = 25;
+        int HIGHEST = 0;        
+    }
+    
+    Type getType();
 
     boolean isCandidate(String key, List<String> values);
 
-    boolean support(String value);
+    boolean supports(String value);
 
     int getPriority();
+
+    @Override
+    default int compareTo(TagParser o) {
+        return o.getPriority() - getPriority();
+    }
+    
 }
 

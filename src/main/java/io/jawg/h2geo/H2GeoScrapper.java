@@ -115,12 +115,12 @@ public class H2GeoScrapper {
         return result;
     }
 
-    public void getPossibleValues(PoiTypeTag poiTypeTag) {
+    public void insertPossibleValues(PoiTypeTag poiTypeTag) {
         tagsInfoApi.getPossibleValues(poiTypeTag.getKey(), "1", "10", "count_ways", "desc")
                 .subscribeOn(Schedulers.io())  // parallel processing
                 .subscribe(tagInfoValue -> {
                     tagInfoValue.getValues().stream().filter(value -> value.getFraction() * 100 > 4).forEach(value -> {
-                        poiTypeTag.getPossibleValues().add(value.getValue());
+                        poiTypeTag.getValues().add(value.getValue());
                     });
                 });
     }
@@ -139,7 +139,7 @@ public class H2GeoScrapper {
      * <li>{@link #getWikiData()}</li>
      * </ul>
      *
-     * then either {@link #toPoiType()} or {@link #toScrappingError()} depending on the result of {@link #hasError()}
+     * then either {@link #toPoiType()} or {@link #toWIkiError()} depending on the result of {@link #hasError()}
      *
      * Note that all these methods return {@link Observable}s
      */
@@ -217,7 +217,7 @@ public class H2GeoScrapper {
                             .subscribeOn(Schedulers.io())
                             .retry(MAX_RETRY_COUNT)
                             .flatMapIterable(Page::getData)
-                            .firstOrDefault(null, linkedProject -> linkedProject.getProjectId().equals("wikidata_org")
+                            .firstOrDefault(null, linkedProject -> linkedProject.getProjectId().contains("wikidata")
                                     && category.equals(linkedProject.getKey())
                                     && categoryValue.getValue().equals(linkedProject.getValue()))
                             .map(this::withWikiDataId));

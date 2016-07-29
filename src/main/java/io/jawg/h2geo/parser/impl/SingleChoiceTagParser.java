@@ -16,14 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with OSM Contributor.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.jawg.h2geo.parser;
+package io.jawg.h2geo.parser.impl;
 
+
+import io.jawg.h2geo.parser.TagParser;
+import io.jawg.h2geo.parser.Type;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class SingleChoiceTagParserImpl implements TagParser {
+public class SingleChoiceTagParser implements TagParser {
 
     private static final String TAG = "SingleChoice";
 
@@ -44,8 +47,8 @@ public class SingleChoiceTagParserImpl implements TagParser {
     private List<String> supportedValues = Arrays.asList("y", "n", "0", "1", "true", "false", "oui", "non", "si", "yes", "no", "undefined", "");
 
     @Override
-    public TagItem.Type getType() {
-        return TagItem.Type.SINGLE_CHOICE;
+    public Type getType() {
+        return Type.SINGLE_CHOICE;
     }
 
     @Override
@@ -56,13 +59,13 @@ public class SingleChoiceTagParserImpl implements TagParser {
     }
 
     @Override
-    public boolean support(String value) {
+    public boolean supports(String value) {
         // If value is not in possible values, user have to format the value.
         return value == null || possibleValues.contains(value) || supportedValues.contains(value);
     }
 
     @Override
     public int getPriority() {
-        return TagParser.PRIORITY_IMPORTANT;
+        return Priority.HIGH;
     }
 }

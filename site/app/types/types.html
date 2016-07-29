@@ -17,15 +17,15 @@
                 <div class="name">{{poiType.label[language]}}</div>
                 <div class="description">{{poiType.description[language]}}</div>
                 <div class="keywords">
-                    <span class="keyword" ng-repeat="keyword in poiType.keyWords[language]">{{keyword}}</span>
+                    <span class="keyword" ng-repeat="keyword in poiType.keywords[language]">{{keyword}}</span>
                 </div>
                 <div class="tags">
                     <div class="tag" ng-repeat="tag in poiType.tags">
                         <span class="tag_key">{{tag.key}}</span><span
                             class="tag_value">{{tag.value}}</span><span
                             class="possible_value"
-                            ng-repeat="possibleValue in tag.possibleValues">{{possibleValue}}<span
-                            class="possible_divider" ng-if="$index < tag.possibleValues.length -1">/</span></span>
+                            ng-repeat="possibleValue in tag.values">{{possibleValue}}<span
+                            class="possible_divider" ng-if="$index < tag.values.length -1">/</span></span>
                     </div>
                 </div>
                 <div class="technical_name"><a ng-href="{{poiType.wikiUrl}}" target="_blank">{{poiType.name}}</a></div>

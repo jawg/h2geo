@@ -16,33 +16,43 @@
  * You should have received a copy of the GNU General Public License
  * along with OSM Contributor.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.jawg.h2geo.parser;
+package io.jawg.h2geo.parser.impl;
 
+import io.jawg.h2geo.parser.TagParser;
+import io.jawg.h2geo.parser.Type;
 
+import java.util.Arrays;
 import java.util.List;
 
-public class AutoCompleteTagParserImpl implements TagParser {
+public class NumberTagParser implements TagParser {
 
-    private static final int LIMIT = 6;
+    private static final List<String> TAG_KEY_POSSIBLE = Arrays.asList("phone", "height", "floors", "level", "layer", "visitors");
+
+    private static final String NUMBER_PATTERN = "[0-9]*(.[0-9]*)?";
 
     @Override
-    public TagItem.Type getType() {
-        return TagItem.Type.TEXT;
+    public Type getType() {
+        return Type.NUMBER;
     }
 
     @Override
     public boolean isCandidate(String key, List<String> values) {
-        return values.size() > LIMIT;
+        for (String possibleKey : TAG_KEY_POSSIBLE) {
+            if (key.contains(possibleKey)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
-    public boolean support(String value) {
-        return true;
+    public boolean supports(String value) {
+        return value == null || value.matches(NUMBER_PATTERN);
     }
 
     @Override
     public int getPriority() {
-        return TagParser.PRIORITY_NORMAL;
+        return Priority.LOW;
     }
 
     @Override
