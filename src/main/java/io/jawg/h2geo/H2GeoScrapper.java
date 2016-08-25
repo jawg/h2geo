@@ -28,6 +28,7 @@ import io.jawg.h2geo.model.PoiType;
 import io.jawg.h2geo.model.PoiTypeTag;
 import io.jawg.h2geo.model.ScrappingError;
 import io.jawg.h2geo.model.WikiError;
+import io.jawg.h2geo.parser.Type;
 import io.jawg.h2geo.rest.TagsInfoApi;
 import io.jawg.h2geo.rest.WikiDataApi;
 import retrofit.GsonConverterFactory;
@@ -122,6 +123,7 @@ public class H2GeoScrapper {
                     tagInfoValue.getValues().stream().filter(value -> value.getFraction() * 100 > 4).forEach(value -> {
                         poiTypeTag.getValues().add(value.getValue());
                     });
+                    poiTypeTag.setType(Type.parse(poiTypeTag));
                 });
     }
 

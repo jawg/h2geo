@@ -113,7 +113,6 @@ public class PoiType implements Comparable<PoiType> {
 
   public static PoiType from(String category, KeyValue categoryValue, WikiPage wikiPage, List<WikiPage> wikiPages, JsonObject wikidata) {
     String name = category + "=" + categoryValue.getValue();
-    System.out.println("creating poitype " + name);
     PoiType poiType = new PoiType();
     poiType.setName(name);
     poiType.setWikiUrl("https://wiki.openstreetmap.org/wiki/" + wikiPage.getTitle());
@@ -169,13 +168,14 @@ public class PoiType implements Comparable<PoiType> {
       poiType.getTags().add(poiTypeTag);
     }
 
-    poiType.getTags().forEach(t -> {
+    poiType.getTags().forEach(h2GeoScrapper::insertPossibleValues);
 
-      h2GeoScrapper.insertPossibleValues(t);
-      t.setType(Type.parse(t));
-    });
-
-
+    for (PoiTypeTag poiTypeTag : poiType.getTags()) {
+      Type type = poiType.getTags().get(poiType.getTags().indexOf(poiTypeTag)).getType();
+      if (type == null || type == Type.TEXT) {
+        poiTypeTag.setType(Type.parse(poiTypeTag));
+      }
+    }
     return poiType;
   }
 

@@ -54,8 +54,8 @@ public class SingleChoiceTagParser implements TagParser {
     @Override
     public boolean isCandidate(String key, List<String> values) {
         this.possibleValues = values;
-        // If size is < 7 and values must be choose in a list with yes/no.
-        return values.size() < LIMIT && values.contains("yes") || values.contains("no");
+        // If size is > 7 and values must be choose in a list with yes/no.
+        return values.size() < LIMIT && (values.contains("yes") || values.contains("no"));
     }
 
     @Override

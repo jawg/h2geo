@@ -9,6 +9,7 @@ import io.jawg.h2geo.parser.impl.SingleChoiceTagParser;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Use the best UI widget based on the tag name and possible values.
@@ -36,15 +37,26 @@ public enum Type {
     String key = tag.getKey();
     String value = tag.getValue();
     List<String> values = tag.getValues();
-    // If only one possible value, type is constant
-    if (value == null && (values == null || values.isEmpty())) {
-      return CONSTANT;
+
+    Optional<TagParser> optionalTagParser = PARSERS.stream().filter(p -> p.isCandidate(key, values)).findFirst();
+
+    TagParser tagParser = null;
+    if (optionalTagParser.isPresent()) {
+      tagParser = optionalTagParser.get();
     }
-    TagParser tagParser = PARSERS.stream().filter(p -> p.isCandidate(key, values)).findFirst().get();
     // If none found, type is text
     if (tagParser == null) {
       return Type.TEXT;
     }
+
+    if (tagParser.getType() == OPENING_HOURS || tagParser.getType() == NUMBER || tagParser.getType() == SINGLE_CHOICE) {
+      return tagParser.getType();
+    }
+    // If only one possible value, type is constant
+    if (value == null && (values == null || values.isEmpty())) {
+      return CONSTANT;
+    }
+
     // If found, return type
     return tagParser.getType();
   }

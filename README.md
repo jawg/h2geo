@@ -81,8 +81,8 @@ With maven , result is output in `h2geo.json` and `h2geo_errors.json`:
 
 ### File format
     {
-        "h2GeoVersion": "0.5.0-SNAPSHOT",
-        "generationDate": "2015-12-09T11:31:29.858",
+        "version": "0.5.0-SNAPSHOT",
+        "lastUpdate": "2015-12-09T11:31:29.858",
         "data": [
             {
                 "name":"a technical name for the type",

@@ -48,8 +48,6 @@ public class Main {
             out.write(gson.toJson(h2GeoRun).getBytes());
             outError.write(gson.toJson(h2GeoErrorsRun).getBytes());
         }
-
-        System.out.println("saved result in " + outFile.getAbsolutePath() + " and " + outErrorFile.getAbsolutePath());
     }
 
 }

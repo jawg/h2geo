@@ -17,34 +17,47 @@
  */
 package io.jawg.h2geo.model;
 
+import io.jawg.h2geo.dto.DescriptionDto;
+import io.jawg.h2geo.dto.NameDto;
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public class H2GeoRun<T> {
-    private String h2GeoVersion;
-    private String generationDate;
+    private NameDto name;
+    private DescriptionDto description;
+    private String version;
+    private String lastUpdate;
     private Set<T> data;
+    private List<List<Double>> offlineArea;
+    private String image;
 
-    public H2GeoRun(String h2GeoVersion, LocalDateTime generationDate, Set<T> data) {
-        this.h2GeoVersion = h2GeoVersion;
-        this.generationDate = generationDate.toString();
+    public H2GeoRun(String version, LocalDateTime lastUpdate, Set<T> data) {
+        this.name = new NameDto("Default preset", "Preset par défaut");
+        this.description = new DescriptionDto("This profile contains the complte list of POIs", "Ce profil contient la liste de tous les POIs Open Street Map");
+        this.image = "";
+        this.version = version;
+        this.lastUpdate = lastUpdate.toString();
         this.data = data;
+        this.offlineArea = new ArrayList<>();
     }
 
-    public String getH2GeoVersion() {
-        return h2GeoVersion;
+    public String getVersion() {
+        return version;
     }
 
-    public void setH2GeoVersion(String h2GeoVersion) {
-        this.h2GeoVersion = h2GeoVersion;
+    public void setVersion(String version) {
+        this.version = version;
     }
 
-    public String getGenerationDate() {
-        return generationDate;
+    public String getLastUpdate() {
+        return lastUpdate;
     }
 
-    public void setGenerationDate(String generationDate) {
-        this.generationDate = generationDate;
+    public void setLastUpdate(String lastUpdate) {
+        this.lastUpdate = lastUpdate;
     }
 
     public Set<T> getData() {
@@ -53,5 +66,29 @@ public class H2GeoRun<T> {
 
     public void setData(Set<T> data) {
         this.data = data;
+    }
+
+    public DescriptionDto getDescription() {
+        return description;
+    }
+
+    public NameDto getName() {
+        return name;
+    }
+
+    public List<List<Double>> getOfflineArea() {
+        return offlineArea;
+    }
+
+    public void setOfflineArea(List<List<Double>> offlineArea) {
+        this.offlineArea = offlineArea;
+    }
+
+    public void setDescription(DescriptionDto description) {
+        this.description = description;
+    }
+
+    public void setName(NameDto name) {
+        this.name = name;
     }
 }
