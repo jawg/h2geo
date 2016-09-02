@@ -19,12 +19,15 @@ package io.jawg.h2geo;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import io.jawg.h2geo.model.Group;
 import io.jawg.h2geo.model.H2GeoRun;
+import io.jawg.h2geo.model.PoiType;
 import io.jawg.h2geo.model.ScrappingError;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 public class Main {
 
@@ -40,8 +43,8 @@ public class Main {
 
         H2GeoScrapper.Result result = new H2GeoScrapper().scrapeTypes();
 
-        H2GeoRun h2GeoRun = new H2GeoRun(BuildProperties.VERSION, LocalDateTime.now(), result.getTypes());
-        H2GeoRun h2GeoErrorsRun = new H2GeoRun(BuildProperties.VERSION, LocalDateTime.now(), ScrappingError.asSet());
+        H2GeoRun h2GeoRun = new H2GeoRun(BuildProperties.VERSION, LocalDateTime.now(), Arrays.asList(new Group<>(result.getTypes())));
+        H2GeoRun h2GeoErrorsRun = new H2GeoRun(BuildProperties.VERSION, LocalDateTime.now(), Arrays.asList(new Group<>(ScrappingError.asSet())));
 
         try (FileOutputStream out = new FileOutputStream(outFile);
              FileOutputStream outError = new FileOutputStream(outErrorFile)) {

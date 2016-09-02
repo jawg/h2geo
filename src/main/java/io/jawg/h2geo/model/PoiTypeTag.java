@@ -11,7 +11,7 @@
  * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or editable.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
@@ -23,12 +23,8 @@ import io.jawg.h2geo.parser.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 public class PoiTypeTag {
-
-  @SerializedName("label")
-  private Map<String, String> label;
 
   @SerializedName("key")
   private String key;
@@ -39,25 +35,21 @@ public class PoiTypeTag {
   @SerializedName("type")
   private Type type;
 
-  @SerializedName("mandatory")
-  private Boolean mandatory;
+  @SerializedName("required")
+  private Boolean required;
 
-  @SerializedName("implied")
-  private Boolean implied;
+  @SerializedName("editable")
+  private Boolean editable;
+
+  @SerializedName("show")
+  private Boolean show;
 
   @SerializedName("values")
   private List<String> values;
 
+
   public PoiTypeTag() {
     values = new ArrayList<>();
-  }
-
-  public Map<String, String> getLabel() {
-    return label;
-  }
-
-  public void setLabel(Map<String, String> label) {
-    this.label = label;
   }
 
   public String getKey() {
@@ -76,20 +68,20 @@ public class PoiTypeTag {
     this.value = value;
   }
 
-  public Boolean getMandatory() {
-    return mandatory;
+  public Boolean getRequired() {
+    return required;
   }
 
-  public void setMandatory(Boolean mandatory) {
-    this.mandatory = mandatory;
+  public void setRequired(Boolean required) {
+    this.required = required;
   }
 
-  public Boolean getImplied() {
-    return implied;
+  public Boolean getEditable() {
+    return editable;
   }
 
-  public void setImplied(Boolean implied) {
-    this.implied = implied;
+  public void setEditable(Boolean editable) {
+    this.editable = editable;
   }
 
   public List<String> getValues() {
@@ -106,5 +98,13 @@ public class PoiTypeTag {
 
   public void setType(Type type) {
     this.type = type;
+  }
+
+  public Boolean getShow() {
+    return show;
+  }
+
+  public void setShow(Boolean show) {
+    this.show = show;
   }
 }

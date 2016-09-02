@@ -17,31 +17,33 @@
  */
 package io.jawg.h2geo.model;
 
-import io.jawg.h2geo.dto.DescriptionDto;
-import io.jawg.h2geo.dto.NameDto;
-
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class H2GeoRun<T> {
-    private NameDto name;
-    private DescriptionDto description;
+    private Map<String, String> name;
+    private Map<String, String> description;
     private String version;
     private String lastUpdate;
-    private Set<T> data;
+    private List<Group<T>> groups;
     private List<List<Double>> offlineArea;
     private String image;
 
-    public H2GeoRun(String version, LocalDateTime lastUpdate, Set<T> data) {
-        this.name = new NameDto("Default preset", "Preset par défaut");
-        this.description = new DescriptionDto("This profile contains the complte list of POIs", "Ce profil contient la liste de tous les POIs Open Street Map");
-        this.image = "";
+    public H2GeoRun(String version, LocalDateTime lastUpdate, List<Group<T>> groups) {
+        name = new HashMap<>();
+        name.put("default", "Default preset");
+        name.put("en", "Default preset");
+        name.put("fr", "Preset par défaut");
+
+        description = new HashMap<>();
+        description.put("default", "This profile contains the complte list of POIs");
+        description.put("en", "This profile contains the complte list of POIs");
+        description.put("fr", "Ce profil contient la liste de tous les POIs Open Street Map");
+
+        this.image = "http://www.survoldefrance.fr/photos/highdef/11/11569.jpg";
         this.version = version;
         this.lastUpdate = lastUpdate.toString();
-        this.data = data;
-        this.offlineArea = new ArrayList<>();
+        this.groups = groups;
     }
 
     public String getVersion() {
@@ -60,19 +62,19 @@ public class H2GeoRun<T> {
         this.lastUpdate = lastUpdate;
     }
 
-    public Set<T> getData() {
-        return data;
+    public List<Group<T>> getGroups() {
+        return groups;
     }
 
-    public void setData(Set<T> data) {
-        this.data = data;
+    public void setGroups(List<Group<T>> groups) {
+        this.groups = groups;
     }
 
-    public DescriptionDto getDescription() {
+    public Map<String, String> getDescription() {
         return description;
     }
 
-    public NameDto getName() {
+    public Map<String, String> getName() {
         return name;
     }
 
@@ -84,11 +86,11 @@ public class H2GeoRun<T> {
         this.offlineArea = offlineArea;
     }
 
-    public void setDescription(DescriptionDto description) {
+    public void setDescription(Map<String, String> description) {
         this.description = description;
     }
 
-    public void setName(NameDto name) {
+    public void setName(Map<String, String> name) {
         this.name = name;
     }
 }

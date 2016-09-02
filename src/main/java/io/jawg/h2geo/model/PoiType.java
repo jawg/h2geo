@@ -33,12 +33,14 @@ import java.util.Map;
 
 public class PoiType implements Comparable<PoiType> {
 
-
   @SerializedName("name")
   private String name;
 
-  @SerializedName("wikiUrl")
-  private String wikiUrl;
+  @SerializedName("url")
+  private String url;
+
+  @SerializedName("icon")
+  private String icon;
 
   @SerializedName("label")
   private Map<String, String> label = new HashMap<>();
@@ -46,10 +48,7 @@ public class PoiType implements Comparable<PoiType> {
   @SerializedName("description")
   private Map<String, String> description = new HashMap<>();
 
-  @SerializedName("usageCount")
-  private int usageCount;
-
-  @SerializedName(("keywords"))
+  @SerializedName("keywords")
   private Map<String, List<String>> keywords = new HashMap<>();
 
   @SerializedName("tags")
@@ -63,12 +62,12 @@ public class PoiType implements Comparable<PoiType> {
     this.name = name;
   }
 
-  public String getWikiUrl() {
-    return wikiUrl;
+  public String getUrl() {
+    return url;
   }
 
-  public void setWikiUrl(String wikiUrl) {
-    this.wikiUrl = wikiUrl;
+  public void setUrl(String url) {
+    this.url = url;
   }
 
   public Map<String, String> getLabel() {
@@ -87,14 +86,6 @@ public class PoiType implements Comparable<PoiType> {
     this.description = description;
   }
 
-  public int getUsageCount() {
-    return usageCount;
-  }
-
-  public void setUsageCount(int usageCount) {
-    this.usageCount = usageCount;
-  }
-
   public Map<String, List<String>> getKeywords() {
     return keywords;
   }
@@ -111,11 +102,19 @@ public class PoiType implements Comparable<PoiType> {
     this.tags = tags;
   }
 
+  public String getIcon() {
+    return icon;
+  }
+
+  public void setIcon(String icon) {
+    this.icon = icon;
+  }
+
   public static PoiType from(String category, KeyValue categoryValue, WikiPage wikiPage, List<WikiPage> wikiPages, JsonObject wikidata) {
     String name = category + "=" + categoryValue.getValue();
     PoiType poiType = new PoiType();
     poiType.setName(name);
-    poiType.setWikiUrl("https://wiki.openstreetmap.org/wiki/" + wikiPage.getTitle());
+    poiType.setUrl("https://wiki.openstreetmap.org/wiki/" + wikiPage.getTitle());
 
     JsonObject entity = wikidata.getAsJsonObject("entities").entrySet().iterator().next().getValue().getAsJsonObject();
 
@@ -148,7 +147,6 @@ public class PoiType implements Comparable<PoiType> {
     categoryTag.setKey(category);
     categoryTag.setValue(categoryValue.getValue());
     poiType.getTags().add(categoryTag);
-    poiType.setUsageCount(categoryValue.getCount());
 
     for (String tag : wikiPage.getTagsImplies()) {
       String[] split = tag.split("=");
@@ -156,7 +154,7 @@ public class PoiType implements Comparable<PoiType> {
       poiTypeTag.setKey(split[0]);
       if (split.length > 1 && !split[1].equals("*")) {
         poiTypeTag.setValue(split[1]);
-        poiTypeTag.setImplied(true);
+        poiTypeTag.setEditable(true);
       }
       poiType.getTags().add(poiTypeTag);
     }
