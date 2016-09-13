@@ -18,9 +18,11 @@
 package io.jawg.h2geo.model;
 
 import java.time.LocalDateTime;
+
 import java.util.*;
 
 public class H2GeoRun<T> {
+    private String author = "h2geo";
     private Map<String, String> name;
     private Map<String, String> description;
     private String version;
@@ -31,19 +33,37 @@ public class H2GeoRun<T> {
 
     public H2GeoRun(String version, LocalDateTime lastUpdate, List<Group<T>> groups) {
         name = new HashMap<>();
-        name.put("default", "Default preset");
-        name.put("en", "Default preset");
-        name.put("fr", "Preset par défaut");
-
+        name.put("default", "Default h2geo preset");
         description = new HashMap<>();
-        description.put("default", "This profile contains the complte list of POIs");
-        description.put("en", "This profile contains the complte list of POIs");
-        description.put("fr", "Ce profil contient la liste de tous les POIs Open Street Map");
-
+        description.put("default", "This profile contains the crawled data from the OpenStreetMap Wiki by h2geo");
         this.image = "http://www.survoldefrance.fr/photos/highdef/11/11569.jpg";
         this.version = version;
         this.lastUpdate = lastUpdate.toString();
         this.groups = groups;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public Map<String, String> getName() {
+        return name;
+    }
+
+    public void setName(Map<String, String> name) {
+        this.name = name;
+    }
+
+    public Map<String, String> getDescription() {
+        return description;
+    }
+
+    public void setDescription(Map<String, String> description) {
+        this.description = description;
     }
 
     public String getVersion() {
@@ -70,14 +90,6 @@ public class H2GeoRun<T> {
         this.groups = groups;
     }
 
-    public Map<String, String> getDescription() {
-        return description;
-    }
-
-    public Map<String, String> getName() {
-        return name;
-    }
-
     public List<List<Double>> getOfflineArea() {
         return offlineArea;
     }
@@ -86,11 +98,11 @@ public class H2GeoRun<T> {
         this.offlineArea = offlineArea;
     }
 
-    public void setDescription(Map<String, String> description) {
-        this.description = description;
+    public String getImage() {
+        return image;
     }
 
-    public void setName(Map<String, String> name) {
-        this.name = name;
+    public void setImage(String image) {
+        this.image = image;
     }
 }

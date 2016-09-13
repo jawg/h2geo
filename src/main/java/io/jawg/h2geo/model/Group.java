@@ -1,7 +1,9 @@
 package io.jawg.h2geo.model;
 
+
 import com.google.gson.annotations.SerializedName;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -25,6 +27,8 @@ public class Group<T> {
 
     public Group(Set<T> items) {
         this.items = items;
+        this.name = new HashMap<>();
+        name.put("default", "Default h2geo Group");
     }
 
     public Map<String, String> getName() {
@@ -58,4 +62,5 @@ public class Group<T> {
     public void setItems(Set<T> items) {
         this.items = items;
     }
+
 }

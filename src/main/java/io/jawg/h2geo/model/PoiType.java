@@ -24,7 +24,6 @@ import com.google.gson.annotations.SerializedName;
 import io.jawg.h2geo.H2GeoScrapper;
 import io.jawg.h2geo.dto.KeyValue;
 import io.jawg.h2geo.dto.WikiPage;
-import io.jawg.h2geo.parser.Type;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,8 +47,8 @@ public class PoiType implements Comparable<PoiType> {
   @SerializedName("description")
   private Map<String, String> description = new HashMap<>();
 
-  @SerializedName("keywords")
-  private Map<String, List<String>> keywords = new HashMap<>();
+  @SerializedName(("keywords"))
+  private Map<String, List<String>> keywords;
 
   @SerializedName("tags")
   private List<PoiTypeTag> tags = new ArrayList<>();
@@ -134,7 +133,7 @@ public class PoiType implements Comparable<PoiType> {
         for (JsonElement alias : asJsonArray) {
           keywords.add(alias.getAsJsonObject().get("value").getAsString());
         }
-        poiType.getKeywords().put(aliasesForLang.getKey(), keywords);
+        poiType.putKeyword(aliasesForLang.getKey(), keywords);
       }
     }
 
@@ -154,7 +153,7 @@ public class PoiType implements Comparable<PoiType> {
       poiTypeTag.setKey(split[0]);
       if (split.length > 1 && !split[1].equals("*")) {
         poiTypeTag.setValue(split[1]);
-        poiTypeTag.setEditable(true);
+        poiTypeTag.setEditable(false);
       }
       poiType.getTags().add(poiTypeTag);
     }
@@ -166,15 +165,14 @@ public class PoiType implements Comparable<PoiType> {
       poiType.getTags().add(poiTypeTag);
     }
 
-    poiType.getTags().forEach(h2GeoScrapper::insertPossibleValues);
-
-    for (PoiTypeTag poiTypeTag : poiType.getTags()) {
-      Type type = poiType.getTags().get(poiType.getTags().indexOf(poiTypeTag)).getType();
-      if (type == null || type == Type.TEXT) {
-        poiTypeTag.setType(Type.parse(poiTypeTag));
-      }
-    }
     return poiType;
+  }
+
+  private void putKeyword(String key, List<String> keywords) {
+    if (this.keywords == null) {
+      this.keywords = new HashMap<>();
+    }
+    this.keywords.put(key, keywords);
   }
 
   @Override

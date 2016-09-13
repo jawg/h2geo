@@ -38,12 +38,17 @@ public enum Type {
     String value = tag.getValue();
     List<String> values = tag.getValues();
 
-    Optional<TagParser> optionalTagParser = PARSERS.stream().filter(p -> p.isCandidate(key, values)).findFirst();
-
-    TagParser tagParser = null;
-    if (optionalTagParser.isPresent()) {
-      tagParser = optionalTagParser.get();
+    // If only one possible value, type is constant
+    if (value != null) {
+      tag.setValues(null);
+      tag.setShow(false);
+      return CONSTANT;
     }
+    if (values.isEmpty()) {
+      tag.setValues(null);
+    }
+    TagParser tagParser = PARSERS.stream().filter(p -> p.isCandidate(key, values)).findFirst().orElseGet(() -> null);
+
     // If none found, type is text
     if (tagParser == null) {
       return Type.TEXT;

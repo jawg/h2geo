@@ -40,7 +40,7 @@ public class PoiTypeTag {
 
   @SerializedName("editable")
   private Boolean editable;
-
+  
   @SerializedName("show")
   private Boolean show;
 
@@ -76,10 +76,18 @@ public class PoiTypeTag {
     this.required = required;
   }
 
+  public Boolean getShow() {
+    return show;
+  }
+
+  public void setShow(Boolean show) {
+    this.show = show;
+  }
+
   public Boolean getEditable() {
     return editable;
   }
-
+  
   public void setEditable(Boolean editable) {
     this.editable = editable;
   }
@@ -89,7 +97,11 @@ public class PoiTypeTag {
   }
 
   public void setValues(List<String> values) {
-    this.values = Collections.synchronizedList(values);
+    if (values == null) {
+      this.values = null;
+    } else {
+      this.values = Collections.synchronizedList(values);
+    }
   }
 
   public Type getType() {
@@ -100,11 +112,10 @@ public class PoiTypeTag {
     this.type = type;
   }
 
-  public Boolean getShow() {
-    return show;
-  }
-
-  public void setShow(Boolean show) {
-    this.show = show;
+  public void addValue(String value) {
+    if (this.values == null) {
+      values = Collections.synchronizedList(new ArrayList<>());
+    }
+    values.add(value);
   }
 }
