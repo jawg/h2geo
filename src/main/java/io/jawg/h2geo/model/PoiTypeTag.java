@@ -22,7 +22,10 @@ import io.jawg.h2geo.parser.Type;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class PoiTypeTag {
 
@@ -45,7 +48,7 @@ public class PoiTypeTag {
   private Boolean show;
 
   @SerializedName("values")
-  private List<String> values;
+  private List<Map<String, Map<String,String>>> values;
 
 
   public PoiTypeTag() {
@@ -92,15 +95,27 @@ public class PoiTypeTag {
     this.editable = editable;
   }
 
-  public List<String> getValues() {
+  public List<Map<String, Map<String,String>>> getValues() {
     return values;
+  }
+
+  public List<String> getReducedValues() {
+    return values.stream().flatMap(o -> o.keySet().stream()).collect(Collectors.toList());
   }
 
   public void setValues(List<String> values) {
     if (values == null) {
       this.values = null;
     } else {
-      this.values = Collections.synchronizedList(values);
+      this.values = Collections.synchronizedList(new ArrayList<>(values.size()));
+      values.forEach(v -> {
+        Map<String, Map<String, String>> valueMap = new HashMap<>();
+        Map<String, String> map = new HashMap<>();
+        map.put("default", v);
+        valueMap.put(v, map);
+        this.values.add(valueMap);
+      });
+      
     }
   }
 
@@ -116,6 +131,10 @@ public class PoiTypeTag {
     if (this.values == null) {
       values = Collections.synchronizedList(new ArrayList<>());
     }
-    values.add(value);
+    Map<String, Map<String, String>> valueMap = new HashMap<>();
+    Map<String, String> map = new HashMap<>();
+    map.put("default", value);
+    valueMap.put(value, map);
+    this.values.add(valueMap);
   }
 }

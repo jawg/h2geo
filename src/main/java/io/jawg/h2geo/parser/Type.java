@@ -9,7 +9,6 @@ import io.jawg.h2geo.parser.impl.SingleChoiceTagParser;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Use the best UI widget based on the tag name and possible values.
@@ -36,7 +35,7 @@ public enum Type {
   public static Type parse(PoiTypeTag tag) {
     String key = tag.getKey();
     String value = tag.getValue();
-    List<String> values = tag.getValues();
+    List<String> values = tag.getReducedValues();
 
     // If only one possible value, type is constant
     if (value != null) {
