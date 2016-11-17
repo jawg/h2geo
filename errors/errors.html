@@ -1,0 +1,39 @@
+<!--<div class="input_wrapper">-->
+    <!--<input type="text" placeholder="Search..." id="search_input" ng-model="search"/>-->
+<!--</div>-->
+
+<div class="content">
+    <div class="error_categories" ng-repeat="error_category in  errors">
+        <div class="error_header" ng-click="expandError($index)">
+            <div>{{error_category.errorMessage}}</div>
+            <div class="icons">
+              <div eb-popover eb-popover-position="bottom" eb-popover-content="{{error_category.errorDescription}}"><i class="fa fa-lg fa-info-circle"></i></div>
+              <i class="fa fa-2x fa-angle-down rotate" ng-class="{down: expandCategories[$index]}"></i>
+            </div>
+        </div>
+        <div ng-class="{'animation_show': expandCategories[$index], 'animation_hide': !expandCategories[$index]}"
+             class="animate-show ">
+            <div class="errors_list">
+                <div class="error_element"
+                     ng-repeat="error_element in  error_category.errors | limitTo:nbElementByPage:page[$index]*nbElementByPage">
+                    <a target="_blank"
+                       ng-href="https://wiki.openstreetmap.org/{{(error_category.errorCode == 3 ||error_category.errorCode == 4 )?'wiki/Tag:':'w/index.php?search='}}{{error_element.key}}%3D{{error_element.value}}">
+                        <img src="img/osm_logo_wiki.png" alt="osm wiki icon" height="32" width="32"/>
+                    </a>
+                    <a target="_blank"
+                       ng-href="http://overpass-turbo.eu/?template=key-value&key={{error_element.key}}&value={{error_element.value}}&C=0;0;2">
+                        <img src="img/Overpass-turbo.png" alt="osm wiki icon" height="32" width="32"/>
+                    </a>
+                    {{error_element.key}} = "{{error_element.value}}"
+                </div>
+                <div class="pager">
+                    <button ng-disabled="page[$index]==0" class="fa fa-2x fa-angle-left"
+                            ng-click="previousPage($index)"></button>
+                    {{page[$index]+1}} / {{nbPage[$index]}}
+                    <button ng-disabled="page[$index]== nbPage[$index]-1" class="fa fa-2x fa-angle-right"
+                            ng-click="nextPage($index)"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

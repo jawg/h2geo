@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>
+<html lang="en" ng-app="h2GeoApp" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>
+<html lang="en" ng-app="h2GeoApp" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>
+<html lang="en" ng-app="h2GeoApp" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html lang="en" ng-app="h2GeoApp" class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>H2Geo</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="app.css">
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+</head>
+<body>
+
+<nav>
+    <img class ="h2geoIcon" src="img/h2geo.png" alt="h2geo icon"/>
+    <div class="nav_title ">H2Geo <i>Beta</i></div>
+    <div class="nav_items">
+        <a class="nav_item nav_text_center" href="#/types">h2Geo File</a>
+        <a class="nav_item nav_text_center" href="#/errors">Errors</a>
+        <a class="nav_item nav_text_center" href="https://github.com/mapsquare/h2geo" target="_blank"><i class="fa fa-2x fa-github"></i></a>
+    </div>
+</nav>
+
+<!--[if lt IE 7]>
+<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+    your browser</a> to improve your experience.</p>
+<![endif]-->
+
+<div ng-view></div>
+
+<div class="provided_content">Provided by <a href="http://www.jawg.io/" target="_blank">jawgmaps</a></div>
+
+<!-- In production use:
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
+-->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.min.js"></script>
+<script src="app.js"></script>
+<script src="types/types.js"></script>
+<script src="errors/errors.js"></script>
+<script src="errors/ebPopover-directive.js"></script>
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+</body>
+</html>

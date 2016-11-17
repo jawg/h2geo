@@ -1,0 +1,35 @@
+<div class="input_wrapper">
+    <input type="text" placeholder="Search..." id="search_input" ng-model="search"
+           ng-style="{'width': (350 * nbColumn) +'px'}"/>
+</div>
+<div class="input_wrapper">
+    <label>
+        <input id="chk_keyword" type="checkbox" ng-model="sf_keywords"/>
+        <label for="chk_keyword" class="label_chk">Keywords</label>
+    </label>
+</div>
+
+<div class="cards">
+    <div class="column_cards" ng-repeat="poiTypesColumn in poiTypesColumns ">
+        <div class="card_wrapper" ng-style="{'animation-delay': (100 * $index) + 'ms'}"
+             ng-repeat="poiType in poiTypesColumn">
+            <div class="card">
+                <div class="name">{{poiType.label[language]}}</div>
+                <div class="description">{{poiType.description[language]}}</div>
+                <div class="keywords">
+                    <span class="keyword" ng-repeat="keyword in poiType.keywords[language]">{{keyword}}</span>
+                </div>
+                <div class="tags">
+                    <div class="tag" ng-repeat="tag in poiType.tags">
+                        <span class="tag_key">{{tag.key}}</span><span
+                            class="tag_value">{{tag.value}}</span><span
+                            class="possible_value"
+                            ng-repeat="possibleValue in tag.values">{{possibleValue}}<span
+                            class="possible_divider" ng-if="$index < tag.values.length -1">/</span></span>
+                    </div>
+                </div>
+                <div class="technical_name"><a ng-href="{{poiType.url}}" target="_blank">{{poiType.name}}</a></div>
+            </div>
+        </div>
+    </div>
+</div>
