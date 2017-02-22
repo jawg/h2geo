@@ -16,7 +16,7 @@ angular.module('h2GeoApp.types', ['ngRoute'])
 
         $http.get('h2geo.json')
             .then(function successCallback(response) {
-                $scope.poiTypes = response.data.data;
+                $scope.poiTypes = response.data.groups[0].items;
                 updatePoiTypeColumn($scope.poiTypes);
 
             }, function errorCallback(response) {
