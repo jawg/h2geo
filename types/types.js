@@ -142,6 +142,7 @@ angular.module('h2GeoApp.types', ['ngRoute'])
             for (i = 0; i < poiTypesToOrder.length; i++) {
                 newPoiTypesColumn[i % $scope.nbColumn].push(poiTypesToOrder[i]);
             }
+            
             $scope.poiTypesColumns = newPoiTypesColumn;
         }
 
