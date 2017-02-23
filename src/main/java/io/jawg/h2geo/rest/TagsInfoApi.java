@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2016 Jawg
+ * Copyright (C) 2017 Jawg
  *
  * This file is part of h2geo.
  *
@@ -22,8 +22,8 @@ import io.jawg.h2geo.dto.LinkedProject;
 import io.jawg.h2geo.dto.Page;
 import io.jawg.h2geo.dto.WikiPage;
 import io.jawg.h2geo.model.TagInfoValue;
-import retrofit.http.GET;
-import retrofit.http.Query;
+import retrofit2.http.GET;
+import retrofit2.http.Query;
 import rx.Observable;
 
 public interface TagsInfoApi {

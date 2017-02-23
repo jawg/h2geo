@@ -1,14 +1,14 @@
 /**
- * Copyright (C) 2016 Jawg
- * <p>
+ * Copyright (C) 2017 Jawg
+ *
  * This file is part of h2geo.
- * <p>
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * <p>
- * http://www.apache.org/licenses/LICENSE-2.0
- * <p>
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,8 +18,6 @@
 package io.jawg.h2geo;
 
 import com.google.gson.JsonObject;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
 import io.jawg.h2geo.dto.KeyValue;
 import io.jawg.h2geo.dto.LinkedProject;
 import io.jawg.h2geo.dto.Page;
@@ -32,14 +30,22 @@ import io.jawg.h2geo.model.WikiError;
 import io.jawg.h2geo.parser.Type;
 import io.jawg.h2geo.rest.TagsInfoApi;
 import io.jawg.h2geo.rest.WikiDataApi;
-import retrofit.GsonConverterFactory;
-import retrofit.Retrofit;
-import retrofit.RxJavaCallAdapterFactory;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Observable;
 import rx.Subscription;
 import rx.schedulers.Schedulers;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+import java.security.cert.CertificateException;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -52,24 +58,12 @@ import java.util.stream.Collectors;
 public class H2GeoScrapper {
 
   public static final int MAX_RETRY_COUNT = 10;
-  public static final long SLEEP_TIME = 2000;
   private TagsInfoApi tagsInfoApi;
   private WikiDataApi wikiDataApi;
 
   public H2GeoScrapper() {
 
-    OkHttpClient okClient = new OkHttpClient();
-
-    okClient.interceptors().add(chain -> {
-      Request request = chain.request();
-      System.out.println(request.urlString());
-      try {
-        Thread.sleep(SLEEP_TIME);
-      } catch (InterruptedException e) {
-        throw new IllegalStateException(e);
-      }
-      return chain.proceed(request);
-    });
+    OkHttpClient okClient = getUnsafeOkHttpClient();
 
     tagsInfoApi = new Retrofit.Builder()
       .addConverterFactory(GsonConverterFactory.create())
@@ -86,6 +80,46 @@ public class H2GeoScrapper {
       .client(okClient)
       .build()
       .create(WikiDataApi.class);
+  }
+
+  private static OkHttpClient getUnsafeOkHttpClient() {
+    try {
+      // Create a trust manager that does not validate certificate chains
+      final TrustManager[] trustAllCerts = new TrustManager[] {
+        new X509TrustManager() {
+          @Override
+          public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
+          }
+
+          @Override
+          public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
+          }
+
+          @Override
+          public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+            return new java.security.cert.X509Certificate[]{};
+          }
+        }
+      };
+
+      // Install the all-trusting trust manager
+      final SSLContext sslContext = SSLContext.getInstance("SSL");
+      sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
+      // Create an ssl socket factory with our all-trusting manager
+      final SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
+
+      OkHttpClient.Builder builder = new OkHttpClient.Builder();
+      builder.sslSocketFactory(sslSocketFactory);
+      builder.hostnameVerifier((hostname, session) -> true);
+      builder.addInterceptor(chain -> {
+        Request request = chain.request();
+        System.out.println(request.url().toString());
+        return chain.proceed(request);
+      });
+      return builder.build();
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
   }
 
 
@@ -116,6 +150,8 @@ public class H2GeoScrapper {
 
     public static void processTags(final Result result, TagsInfoApi tagsInfoApi) {
       Set<PoiType> types = result.getTypes();
+      Set<Result> itemsToRetry = new HashSet<>();
+      
       System.out.println("Will process tags");
       Map<String, List<String>> tags = new ConcurrentHashMap<>();
       // Populate tags
@@ -141,15 +177,13 @@ public class H2GeoScrapper {
       types.stream()
         .forEach(type -> {
           type.getTags().stream().forEach(t -> {
-            
             t.setValues(tags.get(t.getKey()));
             t.setType(Type.parse(t));
           });
         });
-      
-
     }
   }
+
 
   public Result scrapeTypes() {
     Result result = Observable.from(Arrays.asList("amenity", "shop", "highway", "tourism", "historic", "emergency"))
@@ -286,13 +320,20 @@ public class H2GeoScrapper {
           .map(this::withWikiDataId));
     }
 
+    private void waitSomeTime(long millis) {
+      try {
+        Thread.sleep(millis);
+      } catch (InterruptedException e) {
+        throw new IllegalStateException(e);
+      }
+    }
+
     public Observable<ResultBuilder> getWikiData() {
       return doIfNoError(() ->
         wikiDataApi.getDataForEntity(wikiDataId)
           .retry(MAX_RETRY_COUNT)
           .subscribeOn(Schedulers.io())
           .map(this::withWikiData));
-
     }
 
     public PoiType toPoiType() {

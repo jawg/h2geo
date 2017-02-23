@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2016 Jawg
+ * Copyright (C) 2017 Jawg
  *
  * This file is part of h2geo.
  *
@@ -21,7 +21,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import io.jawg.h2geo.model.Group;
 import io.jawg.h2geo.model.H2GeoRun;
-import io.jawg.h2geo.model.PoiType;
 import io.jawg.h2geo.model.ScrappingError;
 
 import java.io.File;

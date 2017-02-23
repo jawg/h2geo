@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2016 Jawg
+ * Copyright (C) 2017 Jawg
  *
  * This file is part of h2geo.
  *
@@ -19,8 +19,8 @@ package io.jawg.h2geo.rest;
 
 
 import com.google.gson.JsonObject;
-import retrofit.http.GET;
-import retrofit.http.Path;
+import retrofit2.http.GET;
+import retrofit2.http.Path;
 import rx.Observable;
 
 public interface WikiDataApi {

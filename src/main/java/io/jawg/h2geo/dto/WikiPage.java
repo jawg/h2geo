@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2016 Jawg
+ * Copyright (C) 2017 Jawg
  *
  * This file is part of h2geo.
  *
